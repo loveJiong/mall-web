@@ -7,8 +7,8 @@
             <div class="gray-sub-title cart-title">
               <div class="first">
                 <div>
-                  <span class="date" v-text="item.createDate"></span>
-                  <span class="order-id"> 订单号： <a @click="orderDetail(item.orderId)">{{item.orderId}}</a> </span>
+                  <span class="date" v-text="item.createTime"></span>
+                  <span class="order-id"> 订单号： <a @click="orderDetail(item.orderId)">{{item.bh}}</a> </span>
                 </div>
                 <div class="f-bc">
                   <span class="price">单价</span>
@@ -73,7 +73,8 @@
   </div>
 </template>
 <script>
-  import { orderList, delOrder } from '/api/goods'
+  import { delOrder } from '/api/goods'
+  import { getOrder } from '/api/getData'
   import YShelf from '/components/shelf'
   import { getStore } from '/utils/storage'
   export default {
@@ -131,19 +132,16 @@
           return '支付失败'
         }
       },
-      _orderList () {
-        let params = {
-          params: {
-            userId: this.userId,
-            size: this.pageSize,
-            page: this.currentPage
-          }
-        }
-        orderList(params).then(res => {
-          this.orderList = res.result.data
-          this.total = res.result.total
-          this.loading = false
-        })
+      async _orderList () {
+        let orderRes = await getOrder(this.userId, '1', 0)
+        if (orderRes.success) this.orderList = orderRes.data
+        console.log(orderRes)
+        this.loading = false
+        // orderList(params).then(res => {
+        //   this.orderList = res.result.data
+        //   this.total = res.result.total
+        //   this.loading = false
+        // })
       },
       _delOrder (orderId, i) {
         let params = {

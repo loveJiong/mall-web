@@ -37,11 +37,7 @@
                     <ul>
                       <!--头像-->
                       <li class="nav-user-avatar">
-                        <div>
-                          <span class="avatar" :style="{backgroundImage:'url('+userInfo.info.file+')'}">
-                          </span>
-                        </div>
-                        <p class="name">{{userInfo.info.username}}</p>
+                        <p class="name">{{userInfo.name}}</p>
                       </li>
                       <li>
                         <router-link to="/user/orderList">我的订单</router-link>
@@ -172,7 +168,6 @@
   import { mapMutations, mapState } from 'vuex'
   import { getCartList, cartDel, getQuickSearch } from '/api/goods'
   import { getCategoryList } from '/api/getData.js'
-  import { loginOut } from '/api/index'
   import { setStore, getStore, removeStore } from '/utils/storage'
   // import store from '../store/'
   import 'element-ui/lib/theme-default/index.css'
@@ -191,7 +186,6 @@
         choosePage: 1,
         searchResults: [],
         timeout: null,
-        token: '',
         categoryListFlag: false
       }
     },
@@ -352,15 +346,9 @@
       },
       // 退出登陆
       _loginOut () {
-        let params = {
-          params: {
-            token: this.token
-          }
-        }
-        loginOut(params).then(res => {
-          removeStore('buyCart')
-          window.location.href = '/'
-        })
+        removeStore('buyCart')
+        removeStore('userInfo')
+        window.location.href = '/'
       },
       // 通过路由改变导航文字样式
       getPage () {
@@ -380,9 +368,8 @@
       }
     },
     mounted () {
-      this.token = getStore('token')
       if (this.login) {
-        this._getCartList()
+        // this._getCartList()
       } else {
         this.INIT_BUYCART()
       }

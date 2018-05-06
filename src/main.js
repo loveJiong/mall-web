@@ -37,8 +37,8 @@ Vue.config.productionTip = false
 const whiteList = ['/home', '/goods', '/login', '/register', '/goodsDetails', '/thanks', '/search', '/refreshsearch', '/refreshgoods'] // 不需要登陆的页面
 router.beforeEach(function (to, from, next) {
   let userInfo = getStore('userInfo')
-  store.commit('RECORD_USERINFO', {info: userInfo})
   if (userInfo || whiteList.indexOf(to.path) !== -1) {
+    userInfo && store.commit('RECORD_USERINFO', JSON.parse(userInfo))
     next()
   } else {
     next('/login')
