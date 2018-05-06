@@ -6,7 +6,8 @@ import {
   ADD_ANIMATION,
   SHOW_CART,
   REDUCE_CART,
-  EDIT_CART
+  EDIT_CART,
+  SET_CATEGORYLIST
 } from './mutation-types'
 import { setStore, getStore } from '../utils/storage'
 export default {
@@ -131,5 +132,16 @@ export default {
     } else {
       state.userInfo = null
     }
+  },
+  [SET_CATEGORYLIST] (state, categoryList) {
+    state.categoryList = []
+    categoryList.forEach(category => {
+      if (category.level === 0) {
+        category.secondaryList = []
+        state.categoryList.push(category)
+      } else {
+        state.categoryList[state.categoryList.length - 1].secondaryList.push(category)
+      }
+    })
   }
 }

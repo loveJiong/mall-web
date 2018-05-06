@@ -20,8 +20,8 @@
                 @select="handleSelect"
                 :on-icon-click="handleIconClick">
               </el-autocomplete>
-              <router-link to="/goods"><a @click="changePage(2)">全部商品</a></router-link>
-              <router-link to="/thanks"><a @click="changePage(4)">捐赠</a></router-link>
+              <!-- <router-link to="/goods"><a @click="changePage(2)">全部商品</a></router-link>
+              <router-link to="/thanks"><a @click="changePage(4)">捐赠</a></router-link> -->
               <!-- <router-link to="/">Smartisan M1 / M1L</router-link>
               <router-link to="/">Smartisan OS</router-link>
               <router-link to="/">欢喜云</router-link>
@@ -52,12 +52,12 @@
                       <li>
                         <router-link to="/user/addressList">收货地址</router-link>
                       </li>
-                      <li>
+                      <!-- <li>
                         <router-link to="/user/support">售后服务</router-link>
-                      </li>
-                      <li>
+                      </li> -->
+                      <!-- <li>
                         <router-link to="/user/coupon">我的优惠</router-link>
-                      </li>
+                      </li> -->
                       <li>
                         <a href="javascript:;" @click="_loginOut">退出</a>
                       </li>
@@ -131,10 +131,19 @@
                 <li>
                   <router-link to="/"><a @click="changePage(1)" :class="{active:choosePage===1}">首页</a></router-link>
                 </li>
-                <li>
-                  <a @click="changGoods(2)" :class="{active:choosePage===2}">全部商品</a>
+                <li class="goodList" @mouseover="showCategoryList" @mouseout="hideCategoryList">
+                  <a :class="{active:choosePage===2}">商品列表</a>
+                  <ul class="categoryList" v-show="categoryListFlag">
+                    <li v-for="(category, i) in categoryList" :key="i">
+                      <span class="category-name">{{category.name}}&nbsp;>&nbsp;</span>
+                      <ul class="secondaryList">
+                        <li v-for="(secondary,j) in category.secondaryList" :key="j" @click="categoryDetails(secondary.guid, secondary.name)">&nbsp;|&nbsp;{{secondary.name}}</li>
+                      </ul>
+                      <span class="no-secondary" v-if="category.secondaryList.length === 0"  @click="categoryDetails(category.guid, category.name)">&nbsp;|&nbsp;{{category.name}}</span>
+                    </li>
+                  </ul>
                 </li>
-                <li>
+                <!-- <li>
                   <a @click="changGoods(3)" :class="{active:choosePage===3}">品牌周边</a>
                 </li>
                 <li>
@@ -148,7 +157,7 @@
                 </li>
                 <li>
                   <a href="https://github.com/Exrick/xmall" target="_blank">Github</a>
-                </li>
+                </li> -->
               </ul>
               <div></div>
             </div>
@@ -162,6 +171,7 @@
   import YButton from '/components/YButton'
   import { mapMutations, mapState } from 'vuex'
   import { getCartList, cartDel, getQuickSearch } from '/api/goods'
+  import { getCategoryList } from '/api/getData.js'
   import { loginOut } from '/api/index'
   import { setStore, getStore, removeStore } from '/utils/storage'
   // import store from '../store/'
@@ -181,12 +191,13 @@
         choosePage: 1,
         searchResults: [],
         timeout: null,
-        token: ''
+        token: '',
+        categoryListFlag: false
       }
     },
     computed: {
       ...mapState([
-        'cartList', 'login', 'receiveInCart', 'showCart', 'userInfo'
+        'cartList', 'login', 'receiveInCart', 'showCart', 'userInfo', 'categoryList'
       ]),
       // 计算价格
       totalPrice () {
@@ -206,7 +217,7 @@
       }
     },
     methods: {
-      ...mapMutations(['ADD_CART', 'INIT_BUYCART', 'ADD_ANIMATION', 'SHOW_CART', 'REDUCE_CART', 'RECORD_USERINFO', 'EDIT_CART']),
+      ...mapMutations(['ADD_CART', 'INIT_BUYCART', 'ADD_ANIMATION', 'SHOW_CART', 'REDUCE_CART', 'RECORD_USERINFO', 'EDIT_CART', 'SET_CATEGORYLIST']),
       handleIconClick (ev) {
         if (this.$route.path === '/search') {
           this.$router.push({
@@ -242,6 +253,23 @@
             }
           })
         }
+      },
+      async getCategoryList () {
+        let categoryListRes = await getCategoryList('1')
+        if (categoryListRes.success) {
+          this.SET_CATEGORYLIST(categoryListRes.data)
+          console.log(this.categoryList)
+        }
+      },
+      showCategoryList () {
+        this.categoryListFlag = true
+      },
+      hideCategoryList () {
+        this.categoryListFlag = false
+      },
+      categoryDetails (guid, name) {
+        let routeData = this.$router.resolve({path: 'goods?categoryId=' + guid + '&categoryName=' + name})
+        window.open(routeData.href, '_blank')
       },
       // 搜索框提示
       loadAll () {
@@ -360,6 +388,7 @@
       }
       this.navFixed()
       this.getPage()
+      this.getCategoryList()
       window.addEventListener('scroll', this.navFixed)
       window.addEventListener('resize', this.navFixed)
       if (typeof (this.$route.query.key) !== undefined) {
@@ -994,13 +1023,13 @@
       display: flex;
       align-items: center;
       height: 100%;
-      li:first-child {
+      > li:first-child {
         padding-left: 0;
         a {
           padding-left: 10px;
         }
       }
-      li {
+      > li {
         position: relative;
         float: left;
         padding-left: 2px;
@@ -1016,7 +1045,7 @@
           color: #5683EA;
         }
       }
-      li:before {
+      > li:before {
         content: ' ';
         position: absolute;
         left: 0;
@@ -1056,6 +1085,41 @@
     background: url("/static/images/cart-empty-new.png") no-repeat;
     background-size: cover;
 
+  }
+  
+  .goodList {
+    position: relative;
+  }
+
+  .categoryList {
+    display: flex;
+    flex-direction: column;
+    width: 1000px;
+    position: absolute;
+    background: #fff;
+    border: 1px solid #d6d6d6;
+    border-color: rgba(0, 0, 0, 0.08);
+    border-radius: 8px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    z-index: 10;
+    > li {
+      display: flex;
+      padding: 5px 10px;
+      .category-name {
+        font-weight: bold;
+      }
+    }
+  }
+  .secondaryList {
+    display: flex;
+    > li:hover {
+      color: #5683EA;
+      cursor: pointer;
+    }
+  }
+  .no-secondary:hover {
+    color: #5683EA;
+    cursor: pointer;
   }
 </style>
 

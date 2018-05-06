@@ -7,7 +7,7 @@ import infiniteScroll from 'vue-infinite-scroll'
 import VueCookie from 'vue-cookie'
 // import { userInfo } from './api'
 import { Button, Pagination, Checkbox, Icon, Autocomplete, Loading, Message, Notification, Steps, Step, Table, TableColumn, Input, Dialog, Select, Option } from 'element-ui'
-// import { getStore } from '/utils/storage'
+import { getStore } from '/utils/storage'
 Vue.use(Button)
 Vue.use(Pagination)
 Vue.use(Checkbox)
@@ -34,29 +34,31 @@ Vue.use(VueLazyload, {
   // attempt: 1
 })
 Vue.config.productionTip = false
-// const whiteList = ['/home', '/goods', '/login', '/register', '/goodsDetails', '/thanks', '/search', '/refreshsearch', '/refreshgoods'] // 不需要登陆的页面
-// router.beforeEach(function (to, from, next) {
-//   let params = {
-//     params: {
-//       token: getStore('token')
-//     }
-//   }
-//   userInfo(params).then(res => {
-//     if (res.result.state !== 1) { // 没登录
-//       if (whiteList.indexOf(to.path) !== -1) { // 白名单
-//         next()
-//       } else {
-//         next('/login')
-//       }
-//     } else {
-//       store.commit('RECORD_USERINFO', {info: res.result})
-//       if (to.path === '/login') { //  跳转到
-//         next({path: '/'})
-//       }
-//       next()
-//     }
-//   })
-// })
+const whiteList = ['/home', '/goods', '/login', '/register', '/goodsDetails', '/thanks', '/search', '/refreshsearch', '/refreshgoods'] // 不需要登陆的页面
+router.beforeEach(function (to, from, next) {
+  let userInfo = getStore('userInfo')
+  store.commit('RECORD_USERINFO', {info: userInfo})
+  if (userInfo || whiteList.indexOf(to.path) !== -1) {
+    next()
+  } else {
+    next('/login')
+  }
+  // userInfo(params).then(res => {
+  //   if (res.result.state !== 1) { // 没登录
+  //     if (whiteList.indexOf(to.path) !== -1) { // 白名单
+  //       next()
+  //     } else {
+  //       next('/login')
+  //     }
+  //   } else {
+  //     store.commit('RECORD_USERINFO', {info: res.result})
+  //     if (to.path === '/login') { //  跳转到
+  //       next({path: '/'})
+  //     }
+  //     next()
+  //   }
+  // })
+})
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

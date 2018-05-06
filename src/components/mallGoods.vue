@@ -2,24 +2,23 @@
   <div class="good-item">
     <div style="">
       <div class="good-img">
-        <a target="_blank" :href="'http://xmall.exrick.cn/#/goodsDetails?productId='+msg.productId">
-          <img v-lazy="msg.productImageBig" :alt="msg.productName">
+        <a target="_blank" :href="'http://xmall.exrick.cn/#/goodsDetails?productId='+msg.id">
+          <img v-lazy="msg.url" :alt="msg.name">
         </a>
       </div>
-      <h6 class="good-title" v-html="msg.productName">{{msg.productName}}</h6>
-      <h3 class="sub-title ellipsis">{{msg.subTitle}}</h3>
+      <h6 class="good-title" v-html="msg.name">{{msg.name}}</h6>
       <div class="good-price pr">
         <div class="ds pa">
-          <a target="_blank" :href="'http://xmall.exrick.cn/#/goodsDetails?productId='+msg.productId">
+          <a target="_blank" :href="'http://xmall.exrick.cn/#/goodsDetails?productId='+msg.id">
             <y-button text="查看详情" style="margin: 0 5px"></y-button>
           </a>
-          <y-button text="加入购物车"
+          <y-button v-if="msg.price" text="加入购物车"
                     style="margin: 0 5px"
-                    @btnClick="addCart(msg.productId,msg.salePrice,msg.productName,msg.productImageBig)"
+                    @btnClick="addCart(msg.id,msg.price,msg.name,msg.url)"
                     classStyle="main-btn"
           ></y-button>
         </div>
-        <p><span style="font-size:14px">￥</span>{{msg.salePrice.toFixed(2)}}</p>
+        <p><span style="font-size:14px" v-if="msg.price">￥</span>{{msg.price}}</p>
       </div>
     </div>
   </div>
@@ -32,7 +31,7 @@
   export default {
     props: {
       msg: {
-        salePrice: 0
+        price: 0
       }
     },
     data () {
@@ -69,8 +68,6 @@
     computed: {
       ...mapState(['login', 'showMoveImg', 'showCart'])
     },
-    mounted () {
-    },
     components: {
       YButton
     }
@@ -84,7 +81,7 @@
     background: #fff;
     width: 25%;
     transition: all .5s;
-    height: 430px;
+    height: 350px;
     &:hover {
       transform: translateY(-3px);
       box-shadow: 1px 1px 20px #999;

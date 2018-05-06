@@ -2,7 +2,8 @@
   <div class="goods">
     <div class="nav">
       <div class="w">
-        <a href="javascript:;" :class="{active:sortType===1}" @click="reset()">综合排序</a>
+        <div>{{categoryName}}</div>
+        <!-- <a href="javascript:;" :class="{active:sortType===1}" @click="reset()">综合排序</a>
         <a href="javascript:;" @click="sortByPrice(1)" :class="{active:sortType===2}">价格从低到高</a>
         <a href="javascript:;" @click="sortByPrice(-1)" :class="{active:sortType===3}">价格从高到低</a>
         <div class="price-interval">
@@ -10,7 +11,10 @@
           <span style="margin: 0 5px"> - </span>
           <input type="number" placeholder="价格" v-model="max">
           <y-button text="确定" classStyle="main-btn" @btnClick="reset" style="margin-left: 10px;"></y-button>
-        </div>
+        </div> -->
+      </div>
+      <div>
+
       </div>
     </div>
 
@@ -21,7 +25,7 @@
           <mall-goods v-for="(item,i) in goods" :key="i" :msg="item"></mall-goods>
         </div>
 
-        <el-pagination
+        <!-- <el-pagination
           v-if="!noResult&&!error"
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
@@ -30,40 +34,25 @@
           :page-size="pageSize"
           layout="total, sizes, prev, pager, next, jumper"
           :total="total">
-        </el-pagination>
+        </el-pagination> -->
       </div>
       <div class="no-info" v-if="noResult">
         <div class="no-data">
           <img src="/static/images/no-search.png">
           <br> 抱歉！暂时还没有商品
         </div>
-        <section class="section">
-          <y-shelf :title="recommendPanel.name">
-            <div slot="content" class="recommend">
-              <mall-goods :msg="item" v-for="(item,i) in recommendPanel.panelContents" :key="i"></mall-goods>
-            </div>
-          </y-shelf>
-        </section>
       </div>
       <div class="no-info" v-if="error">
         <div class="no-data">
           <img src="/static/images/error.png">
           <br> 抱歉！出错了...
         </div>
-        <section class="section">
-          <y-shelf :title="recommendPanel.name">
-            <div slot="content" class="recommend">
-              <mall-goods :msg="item" v-for="(item,i) in recommendPanel.panelContents" :key="i"></mall-goods>
-            </div>
-          </y-shelf>
-        </section>
       </div>
     </div>
   </div>
 </template>
 <script>
-  import { getAllGoods } from '/api/goods.js'
-  import { recommend } from '/api/index.js'
+  import { getGoods } from '/api/getData.js'
   import mallGoods from '/components/mallGoods'
   import YButton from '/components/YButton'
   import YShelf from '/components/shelf'
@@ -80,11 +69,11 @@
         sortType: 1,
         windowHeight: null,
         windowWidth: null,
-        recommendPanel: [],
         sort: '',
         currentPage: 1,
         total: 0,
-        pageSize: 20
+        pageSize: 20,
+        categoryName: this.$route.query.categoryName
       }
     },
     methods: {
@@ -98,38 +87,33 @@
         this._getAllGoods()
         this.loading = true
       },
-      _getAllGoods () {
-        let cid = this.$route.query.cid
-        if (this.min !== '') {
-          this.min = Math.floor(this.min)
+      async _getAllGoods () {
+        let categoryId = this.$route.query.categoryId
+        let goodsRes = await getGoods('1', categoryId)
+        if (goodsRes.success && goodsRes.data.length > 0) {
+          this.noResult = false
+          this.error = false
+          this.goods = goodsRes.data
+        } else if (goodsRes.success) {
+          this.error = false
+        } else {
+          this.error = true
         }
-        if (this.max !== '') {
-          this.max = Math.floor(this.max)
-        }
-        let params = {
-          params: {
-            page: this.currentPage,
-            size: this.pageSize,
-            sort: this.sort,
-            priceGt: this.min,
-            priceLte: this.max,
-            cid: cid
-          }
-        }
-        getAllGoods(params).then(res => {
-          if (res.success === true) {
-            this.total = res.result.total
-            this.goods = res.result.data
-            this.noResult = false
-            if (this.total === 0) {
-              this.noResult = true
-            }
-            this.error = false
-          } else {
-            this.error = true
-          }
-          this.loading = false
-        })
+        this.loading = false
+        // getAllGoods(params).then(res => {
+        //   if (res.success === true) {
+        //     this.total = res.result.total
+        //     this.goods = res.result.data
+        //     this.noResult = false
+        //     if (this.total === 0) {
+        //       this.noResult = true
+        //     }
+        //     this.error = false
+        //   } else {
+        //     this.error = true
+        //   }
+        //   this.loading = false
+        // })
       },
       // 默认排序
       reset () {
@@ -154,10 +138,6 @@
       this.windowHeight = window.innerHeight
       this.windowWidth = window.innerWidth
       this._getAllGoods()
-      recommend().then(res => {
-        let data = res.result
-        this.recommendPanel = data[0]
-      })
     },
     components: {
       mallGoods,
@@ -243,15 +223,4 @@
     width: 1218px;
     align-self: center;
   }
-
-  .recommend {
-    display: flex;
-    > div {
-      flex: 1;
-      width: 25%;
-    }
-  }
-
-
-
 </style>

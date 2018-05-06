@@ -19,66 +19,28 @@
         </ul>
       </div>
     </div>
-
-    <div v-for="(item,i) in home" :key="i">
-
-      <div class="activity-panel" v-if="item.type === 1">
-        <ul class="box">
-          <li class="content" v-for="(iitem,j) in item.panelContents" :key="j" @click="linkTo(iitem)">
-            <img class="i" :src="iitem.picUrl">
-            <a class="cover-link"></a>
-          </li>
-        </ul>
-      </div>
-
-      <section class="w mt30 clearfix" v-if="item.type === 2">
-        <y-shelf :title="item.name">
-          <div slot="content" class="hot">
-            <mall-goods :msg="iitem" v-for="(iitem,j) in item.panelContents" :key="j"></mall-goods>
-          </div>
-        </y-shelf>
-      </section>
-
-      <section class="w mt30 clearfix" v-if="item.type === 3">
-        <y-shelf :title="item.name">
-          <div slot="content" class="floors" >
-            <div class="imgbanner" v-for="(iitem,j) in item.panelContents" :key="j" v-if="iitem.type === 2 || iitem.type === 3" @click="linkTo(iitem)">
-              <img v-lazy="iitem.picUrl">
-              <a class="cover-link"></a>
-            </div>
-            <mall-goods :msg="iitem" v-for="(iitem,j) in item.panelContents" :key="j" v-if="iitem.type != 2"></mall-goods>
-          </div>
-        </y-shelf>
-      </section>
-
-      </div>
-    </div>
-
+    <section class="w mt30 clearfix" v-for="(category, i) in categoryList" :key="i">
+      <y-shelf :title="category.name">
+        <div slot="content" class="floors" >
+          <mall-category :msg="secondary" v-for="(secondary,j) in category.secondaryList" :key="j"></mall-category>
+          <mall-category :msg="category" v-if="category.secondaryList.length === 0"></mall-category>
+        </div>
+      </y-shelf>
+    </section>
+  </div>
     <div class="no-info" v-if="error">
       <div class="no-data">
         <img src="/static/images/error.png">
         <br> 抱歉！出错了...
       </div>
     </div>
-
-    <el-dialog
-      title="通知"
-      :visible.sync="dialogVisible"
-      width="30%"
-      style="width:70%;margin:0 auto">
-      <span>首页已升级！XPay个人支付收款系统已上线，赶快去支付体验吧！</span>
-      <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="dialogVisible = false">知道了</el-button>
-      </span>
-    </el-dialog>
   </div>
 </template>
 <script>
-  import { productHome } from '/api/index.js'
+  import { mapState } from 'vuex'
   import YShelf from '/components/shelf'
   import product from '/components/product'
-  import mallGoods from '/components/mallGoods'
-  import { setStore, getStore } from '/utils/storage.js'
+  import mallCategory from '/components/mallCategory'
   export default {
     data () {
       return {
@@ -94,9 +56,11 @@
         home: [],
         loading: false,
         notify: '1',
-        dialogVisible: false,
         timer: ''
       }
+    },
+    computed: {
+      ...mapState(['categoryList'])
     },
     methods: {
       autoPlay () {
@@ -160,31 +124,7 @@
       bgOut (dom) {
         dom.style['transform'] = 'rotateY(0deg) rotateX(0deg)'
         dom.style.transform = 'rotateY(0deg) rotateX(0deg)'
-      },
-      showNotify () {
-        var value = getStore('notify')
-        if (this.notify !== value) {
-          this.dialogVisible = true
-          setStore('notify', this.notify)
-        }
       }
-    },
-    mounted () {
-      productHome().then(res => {
-        if (res.success === false) {
-          this.error = true
-          return
-        }
-        let data = res.result
-        this.home = data
-        this.loading = false
-        for (let i = 0; i < data.length; i++) {
-          if (data[i].type === 0) {
-            this.banner = data[i].panelContents
-          }
-        }
-      })
-      this.showNotify()
     },
     created () {
       this.play()
@@ -192,7 +132,7 @@
     components: {
       YShelf,
       product,
-      mallGoods
+      mallCategory
     }
   }
 </script>

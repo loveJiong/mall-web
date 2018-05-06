@@ -58,6 +58,7 @@
     },
     created () {
       let path = this.$route.path.split('/')[2]
+      console.log(path)
       this.nav.forEach(item => {
         if (item.path === path) {
           this.title = item.name
@@ -71,6 +72,7 @@
     watch: {
       $route (to) {
         let path = to.path.split('/')[2]
+        console.log(path)
         this.nav.forEach(item => {
           if (item.path === path) {
             this.title = item.name
