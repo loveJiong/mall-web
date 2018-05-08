@@ -83,19 +83,19 @@
                 <a @click="goodsDetails(item.productId)" title="" target="_blank">{{item.productName}}</a>
               </div>
               <div class="n-b">
-                <div class="price">¥ {{item.salePrice.toFixed(2)}}</div>
+                <div class="price">€ {{item.salePrice.toFixed(2)}}</div>
                 <div class="goods-num">{{item.productNum}}</div>
-                <div class="subtotal"> ¥ {{(item.salePrice * item.productNum).toFixed(2)}}</div>
+                <div class="subtotal"> € {{(item.salePrice * item.productNum).toFixed(2)}}</div>
               </div>
             </div>
           </div>
           <!--合计-->
           <div class="order-discount-line">
             <p style="font-size: 14px;font-weight: bolder;"> <span style="padding-right:47px">商品总计：</span>
-              <span style="font-size: 16px;font-weight: 500;line-height: 32px;">¥ {{orderTotal}}</span>
+              <span style="font-size: 16px;font-weight: 500;line-height: 32px;">€ {{orderTotal}}</span>
             </p>
-            <p><span style="padding-right:30px">运费：</span><span style="font-weight: 700;">+ ¥ 0.00</span></p>
-            <p class="price-total"><span>应付金额：</span><span class="price-red">¥ {{orderTotal}}</span></p>
+            <p><span style="padding-right:30px">运费：</span><span style="font-weight: 700;">+ € 0.00</span></p>
+            <p class="price-total"><span>应付金额：</span><span class="price-red">€ {{orderTotal}}</span></p>
           </div>
 
           <div class="gray-sub-title cart-title">

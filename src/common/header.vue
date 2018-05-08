@@ -85,7 +85,7 @@
                                       <a href="" v-text="item.productName"></a>
                                     </h4>
                                       <!-- <p class="attrs"><span>白色</span></p> -->
-                                      <h6><span class="price-icon">¥</span><span
+                                      <h6><span class="price-icon">€</span><span
                                         class="price-num">{{item.salePrice}}</span><span
                                         class="item-num">x {{item.productNum}}</span>
                                       </h6></div>
@@ -99,7 +99,7 @@
                       </div>
                       <!--总件数-->
                       <div class="nav-cart-total"><p>共 <strong>{{totalNum}}</strong> 件商品</p> <h5>合计：<span
-                        class="price-icon">¥</span><span
+                        class="price-icon">€</span><span
                         class="price-num">{{totalPrice}}</span></h5>
                         <h6>
                           <y-button classStyle="main-btn"

@@ -2,32 +2,41 @@
   <div class="good-item">
     <div style="">
       <div class="good-img">
-        <a target="_blank" :href="'http://xmall.exrick.cn/#/goodsDetails?productId='+msg.id">
+        <a @click="goodsDetails(msg)">
           <img v-lazy="msg.url" :alt="msg.name">
         </a>
       </div>
       <h6 class="good-title" v-html="msg.name">{{msg.name}}</h6>
       <div class="good-price pr">
         <div class="ds pa">
-          <a target="_blank" :href="'http://xmall.exrick.cn/#/goodsDetails?productId='+msg.id">
+          <a @click="goodsDetails(msg)">
             <y-button text="查看详情" style="margin: 0 5px"></y-button>
           </a>
           <y-button v-if="msg.price" text="加入购物车"
                     style="margin: 0 5px"
-                    @btnClick="addCart(msg.id,msg.price,msg.name,msg.url)"
+                    @btnClick="addCart(msg)"
                     classStyle="main-btn"
           ></y-button>
         </div>
-        <p><span style="font-size:14px" v-if="msg.price">￥</span>{{msg.price}}</p>
+        <p v-if="msg.zk == '0' || msg.zk == ''">
+          <span style="font-size:14px" v-if="msg.price">€</span>
+          {{msg.price}}
+        </p>
+        <p class="have-zk" v-if="msg.zk != '0' && msg.zk != ''">
+          <span style="font-size:14px" v-if="msg.price">€</span>
+          <span>{{zkPrice(msg.price, msg.zk)}}</span>
+          <span class="origin-price">{{msg.price}}</span>
+          <span class="price-zk">(-{{msg.zk}}%)</span>
+        </p>
       </div>
     </div>
   </div>
 </template>
 <script>
   import YButton from '/components/YButton'
-  import { addCart } from '/api/goods.js'
+  // import { addCart } from '/api/goods.js'
   import { mapMutations, mapState } from 'vuex'
-  import { getStore } from '/utils/storage'
+  // import { getStore } from '/utils/storage'
   export default {
     props: {
       msg: {
@@ -39,18 +48,29 @@
     },
     methods: {
       ...mapMutations(['ADD_CART', 'ADD_ANIMATION', 'SHOW_CART']),
-      goodsDetails (id) {
-        this.$router.push({path: 'goodsDetails/productId=' + id})
+      goodsDetails (good) {
+        let routeData = this.$router.resolve({name: 'goodsDetails'})
+        window.open(`${routeData.href}?good=${JSON.stringify(good)}`, '_blank')
+        // console.log(good)
+        // this.$router.push({name: 'goodsDetails', params: { good }})
       },
-      addCart (id, price, name, img) {
+      zkPrice (price, zk) {
+        let num = price
+        if (zk !== '0' && zk !== '') {
+          num = price * (100 - zk) / 100
+          num = num.toFixed(2)
+        }
+        return num
+      },
+      addCart (product) {
         if (!this.showMoveImg) {     // 动画是否在运动
           if (this.login) { // 登录了 直接存在用户名下
-            addCart({userId: getStore('userId'), productId: id, productNum: 1}).then(res => {
-              // 并不重新请求数据
-              this.ADD_CART({productId: id, salePrice: price, productName: name, productImg: img})
-            })
+            // addCart({userId: getStore('userId'), productId: id, productNum: 1}).then(res => {
+            //   // 并不重新请求数据
+            //   this.ADD_CART({productId: id, salePrice: price, productName: name, productImg: img})
+            // })
           } else { // 未登录 vuex
-            this.ADD_CART({productId: id, salePrice: price, productName: name, productImg: img})
+            this.ADD_CART({product, productId: product.id, salePrice: this.zkPrice(product.price, product.zk), productName: product.name, productImg: product.url})
           }
           // 加入购物车动画
           var dom = event.target
@@ -58,7 +78,7 @@
           let elLeft = dom.getBoundingClientRect().left + (dom.offsetWidth / 2)
           let elTop = dom.getBoundingClientRect().top + (dom.offsetHeight / 2)
           // 需要触发
-          this.ADD_ANIMATION({moveShow: true, elLeft: elLeft, elTop: elTop, img: img})
+          this.ADD_ANIMATION({moveShow: true, elLeft: elLeft, elTop: elTop, img: product.url})
           if (!this.showCart) {
             this.SHOW_CART({showCart: true})
           }
@@ -131,6 +151,12 @@
       color: #d0d0d0;
       padding: 10px;
     }
-
+    .origin-price {
+      font-size: 12px;
+      text-decoration: line-through;
+    }
+    .price-zk {
+      font-size: 12px;
+    }
   }
 </style>

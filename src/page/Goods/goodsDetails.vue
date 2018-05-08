@@ -4,16 +4,16 @@
     <div class="gray-box">
       <div class="gallery-wrapper">
         <div class="gallery">
-          <div class="thumbnail">
+          <!-- <div class="thumbnail">
             <ul>
               <li v-for="(item,i) in small" :key="i" :class="{on:big===item}" @click="big=item">
-                <img v-lazy="item" :alt="product.productName">
+                <img v-lazy="item" :alt="product.name">
               </li>
             </ul>
-          </div>
+          </div> -->
           <div class="thumb">
             <div class="big">
-              <img :src="big" :alt="product.productName">
+              <img :src="product.url" :alt="product.name">
             </div>
           </div>
         </div>
@@ -21,25 +21,30 @@
       <!--右边-->
       <div class="banner">
         <div class="sku-custom-title">
-          <h4>{{product.productName}}</h4>
-          <h6>
-            <span>{{product.subTitle}}</span>
-            <span class="price">
-              <em>¥</em><i>{{product.salePrice.toFixed(2)}}</i></span>
+          <h4>{{product.name}}</h4>
+          <h6 v-if="product.zk == '0' || product.zk == ''" class="price">
+            <span >
+              <em>€</em><i>{{product.price}}</i></span>
+          </h6>
+          <h6 v-if="product.zk != '0' && product.zk != ''" class="have-zk price">
+            <span style="font-size:14px">€</span>
+            <span><i>{{zkPrice(product.price, product.zk)}}</i></span>
+            <span class="origin-price">{{product.price}}</span>
+            <span class="price-zk">(-{{product.zk}}%)</span>
           </h6>
         </div>
         <div class="num">
           <span class="params-name">数量</span>
-          <buy-num @edit-num="editNum" :limit="Number(product.limitNum)"></buy-num>
+          <buy-num @edit-num="editNum" :limit="99"></buy-num>
         </div>
         <div class="buy">
           <y-button text="加入购物车"
-                    @btnClick="addCart(product.productId,product.salePrice,product.productName,product.productImageBig)"
+                    @btnClick="addCart(product)"
                     classStyle="main-btn"
                     style="width: 145px;height: 50px;line-height: 48px"></y-button>
-          <y-button text="现在购买"
-                    @btnClick="checkout(product.productId)"
-                    style="width: 145px;height: 50px;line-height: 48px;margin-left: 10px"></y-button>
+          <!-- <y-button text="现在购买"
+                    @btnClick="checkout(product.id)"
+                    style="width: 145px;height: 50px;line-height: 48px;margin-left: 10px"></y-button> -->
         </div>
       </div>
     </div>
@@ -61,7 +66,7 @@
   </div>
 </template>
 <script>
-  import { productDet, addCart } from '/api/goods'
+  // import { addCart } from '/api/goods'
   import { mapMutations, mapState } from 'vuex'
   import YShelf from '/components/shelf'
   import BuyNum from '/components/buynum'
@@ -70,8 +75,7 @@
   export default {
     data () {
       return {
-        productMsg: {},
-        small: [],
+        productMsg: false,
         big: '',
         product: {
           salePrice: 0
@@ -85,34 +89,34 @@
     },
     methods: {
       ...mapMutations(['ADD_CART', 'ADD_ANIMATION', 'SHOW_CART']),
-      _productDet (productId) {
-        productDet({params: {productId}}).then(res => {
-          let result = res.result
-          this.product = result
-          this.productMsg = result.detail || ''
-          this.small = result.productImageSmall
-          this.big = this.small[0]
-        })
+      zkPrice (price, zk) {
+        let num = price
+        if (zk !== '0' && zk !== '') {
+          num = price * (100 - zk) / 100
+          num = num.toFixed(2)
+        }
+        return num
       },
-      addCart (id, price, name, img) {
+      addCart (product) {
         if (!this.showMoveImg) {     // 动画是否在运动
           if (this.login) { // 登录了 直接存在用户名下
-            addCart({userId: this.userId, productId: id, productNum: this.productNum}).then(res => {
-              // 并不重新请求数据
-              this.ADD_CART({
-                productId: id,
-                salePrice: price,
-                productName: name,
-                productImg: img,
-                productNum: this.productNum
-              })
-            })
+            // addCart({userId: this.userId, productId: id, productNum: this.productNum}).then(res => {
+            //   // 并不重新请求数据
+            //   this.ADD_CART({
+            //     productId: id,
+            //     salePrice: price,
+            //     productName: name,
+            //     productImg: img,
+            //     productNum: this.productNum
+            //   })
+            // })
           } else { // 未登录 vuex
             this.ADD_CART({
-              productId: id,
-              salePrice: price,
-              productName: name,
-              productImg: img,
+              product,
+              productId: product.id,
+              salePrice: this.zkPrice(product.price, product.zk),
+              productName: product.name,
+              productImg: product.url,
               productNum: this.productNum
             })
           }
@@ -122,15 +126,15 @@
           let elLeft = dom.getBoundingClientRect().left + (dom.offsetWidth / 2)
           let elTop = dom.getBoundingClientRect().top + (dom.offsetHeight / 2)
           // 需要触发
-          this.ADD_ANIMATION({moveShow: true, elLeft: elLeft, elTop: elTop, img: img})
+          this.ADD_ANIMATION({moveShow: true, elLeft: elLeft, elTop: elTop, img: product.url})
           if (!this.showCart) {
             this.SHOW_CART({showCart: true})
           }
         }
       },
-      checkout (productId) {
-        this.$router.push({path: '/checkout', query: {productId, num: this.productNum}})
-      },
+      // checkout (productId) {
+      //   this.$router.push({path: '/checkout', query: {productId, num: this.productNum}})
+      // },
       editNum (num) {
         this.productNum = num
       }
@@ -139,8 +143,8 @@
       YShelf, BuyNum, YButton
     },
     created () {
-      let id = this.$route.query.productId
-      this._productDet(id)
+      this.product = JSON.parse(this.$route.query.good)
+      console.log(this.product)
       this.userId = getStore('userId')
     }
   }
@@ -214,7 +218,6 @@
         color: #bdbdbd;
         display: flex;
         align-items: center;
-        justify-content: space-between;
       }
       .sku-custom-title {
         overflow: hidden;
@@ -265,7 +268,7 @@
     font-size: 30px;
   }
 
-  .price {
+  .price > span{
     display: block;
     color: #d44d44;
     font-weight: 700;
@@ -275,6 +278,15 @@
     i {
       padding-left: 2px;
       font-size: 24px;
+    }
+  }
+  .price {
+    .origin-price {
+      font-size: 12px;
+      text-decoration: line-through;
+    }
+    .price-zk {
+      font-size: 12px;
     }
   }
 </style>

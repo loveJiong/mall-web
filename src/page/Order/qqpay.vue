@@ -23,7 +23,7 @@
               <span>
               
               </span>
-              <em><span>¥</span>{{orderTotal}}</em>
+              <em><span>€</span>{{orderTotal}}</em>
               <y-button :text="payNow"
                         :classStyle="submit?'main-btn':'disabled-btn'"
                         style="width: 120px;height: 40px;font-size: 16px;line-height: 38px"

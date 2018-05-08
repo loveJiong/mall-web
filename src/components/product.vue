@@ -8,7 +8,7 @@
       <p>{{product.spu.sku_info[0].sub_title}}</p>
     </div>
     <p class="price">
-      <i>¥</i>
+      <i>€</i>
       <span>{{product.spu.price}}</span>
     </p>
     <ul class="dot-list">

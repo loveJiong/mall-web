@@ -11,10 +11,10 @@
         <div class="pay-info">
           <span style="color:red">*</span> 昵称：<el-input v-model="nickName" placeholder="请输入您的昵称" @change="checkValid" :maxlength="maxLength" class="input"></el-input><br>
           <span style="color:red">*</span> 捐赠金额：<el-select class="money-select" v-model="moneySelect" placeholder="请选择支付金额" @change="changeSelect">
-            <el-option label="￥0.10 我是穷逼" value="0.10"></el-option>
-            <el-option label="￥1.00 支付测试" value="1.00"></el-option>
-            <el-option label="￥5.00 感谢捐赠" value="5.00"></el-option>
-            <el-option label="￥10.00 感谢大佬" value="10.00"></el-option>
+            <el-option label="€0.10 我是穷逼" value="0.10"></el-option>
+            <el-option label="€1.00 支付测试" value="1.00"></el-option>
+            <el-option label="€5.00 感谢捐赠" value="5.00"></el-option>
+            <el-option label="€10.00 感谢大佬" value="10.00"></el-option>
             <el-option label="自定义 随意撒币" value="custom"></el-option>
           </el-select><br>
           <div v-if="moneySelect === 'custom'"><span style="color:red">*</span> 输入金额：<el-input v-model="money" placeholder="请输入捐赠金额(最多2位小数，不得低于0.1元)" @change="checkValid" :maxlength="maxLength" class="input" style="margin-left:10px"></el-input><br></div>
@@ -37,11 +37,11 @@
               <span>
                 订单金额：
               </span>
-              <em><span>¥</span>{{orderTotal.toFixed(2)}}</em>
+              <em><span>€</span>{{orderTotal.toFixed(2)}}</em>
               <span>
                 实际应付金额：
               </span>
-              <em><span>¥</span>{{money}}</em>
+              <em><span>€</span>{{money}}</em>
               <y-button :text="payNow"
                         :classStyle="submit?'main-btn':'disabled-btn'"
                         style="width: 120px;height: 40px;font-size: 16px;line-height: 38px"
@@ -78,10 +78,10 @@
           </div>
         </div>
         <div class="n-b">
-          <div class="price">¥ {{item.salePrice}}</div>
+          <div class="price">€ {{item.salePrice}}</div>
           <div class="goods-num">{{item.productNum}}</div>
           <div class="subtotal">
-            <div class="subtotal-cell"> ¥ {{item.salePrice * item.productNum}}<br></div>
+            <div class="subtotal-cell"> € {{item.salePrice * item.productNum}}<br></div>
           </div>
         </div>
       </div>
@@ -89,9 +89,9 @@
     <!--合计-->
     <div class="order-discount-line">
       <p style="font-size: 14px;font-weight: bolder;"> <span style="padding-right:47px">商品总计：</span>
-        <span style="font-size: 16px;font-weight: 500;line-height: 32px;">¥ {{orderTotal}}</span>
+        <span style="font-size: 16px;font-weight: 500;line-height: 32px;">€ {{orderTotal}}</span>
       </p>
-      <p><span style="padding-right:30px">运费：</span><span style="font-weight: 700;">+ ¥ 0.00</span></p>
+      <p><span style="padding-right:30px">运费：</span><span style="font-weight: 700;">+ € 0.00</span></p>
     </div>
   </div>
 </template>

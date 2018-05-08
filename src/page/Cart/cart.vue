@@ -48,7 +48,7 @@
                       <!--商品数量-->
                       <div>
                         <!--总价格-->
-                        <div class="subtotal" style="font-size: 14px">¥ {{item.salePrice * item.productNum}}</div>
+                        <div class="subtotal" style="font-size: 14px">€ {{item.salePrice * item.productNum}}</div>
                         <!--数量-->
                         <buy-num :num="item.productNum"
                                  :id="item.productId"
@@ -62,7 +62,7 @@
                         >
                         </buy-num>
                         <!--价格-->
-                        <div class="price1">¥ {{item.salePrice}}</div>
+                        <div class="price1">€ {{item.salePrice}}</div>
                       </div>
                     </div>
                   </div>
@@ -88,7 +88,7 @@
                     class="highlight">已选择 <i v-text="checkNum"></i> 件商品</h4>
                     <h5>共计 <i v-text="totalNum"></i> 件商品</h5></div>
                   <div class="shipping-total shipping-price"><h4
-                    class="highlight">应付总额：<span>￥</span><i v-text="checkPrice"></i>
+                    class="highlight">应付总额：<span>€</span><i v-text="checkPrice"></i>
                   </h4>
                     <h5 class="shipping-tips ng-scope">应付总额不含运费</h5>
                   </div>

@@ -73,13 +73,13 @@
                       <!--商品数量-->
                       <div>
                         <!--总价格-->
-                        <div class="subtotal" style="font-size: 14px">¥ {{item.salePrice * item.productNum}}</div>
+                        <div class="subtotal" style="font-size: 14px">€ {{item.salePrice * item.productNum}}</div>
                         <!--数量-->
                         <div class="item-cols-num">
                           <span v-text="item.productNum"></span>
                         </div>
                         <!--价格-->
-                        <div class="price">¥ {{item.salePrice}}</div>
+                        <div class="price">€ {{item.salePrice}}</div>
                       </div>
                     </div>
                   </div>
@@ -92,7 +92,7 @@
                 <div class="shipping">
                   <div class="shipping-box" style="padding: 0 40px;">
                     <div class="shipping-total shipping-price"><h4
-                      class="highlight">应付总额：<em>￥{{checkPrice}}</em>
+                      class="highlight">应付总额：<em>€{{checkPrice}}</em>
                     </h4>
                     </div>
                   </div>
