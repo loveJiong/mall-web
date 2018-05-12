@@ -4,13 +4,6 @@
     <div class="gray-box">
       <div class="gallery-wrapper">
         <div class="gallery">
-          <!-- <div class="thumbnail">
-            <ul>
-              <li v-for="(item,i) in small" :key="i" :class="{on:big===item}" @click="big=item">
-                <img v-lazy="item" :alt="product.name">
-              </li>
-            </ul>
-          </div> -->
           <div class="thumb">
             <div class="big">
               <img :src="product.url" :alt="product.name">
@@ -42,9 +35,6 @@
                     @btnClick="addCart(product)"
                     classStyle="main-btn"
                     style="width: 145px;height: 50px;line-height: 48px"></y-button>
-          <!-- <y-button text="现在购买"
-                    @btnClick="checkout(product.id)"
-                    style="width: 145px;height: 50px;line-height: 48px;margin-left: 10px"></y-button> -->
         </div>
       </div>
     </div>

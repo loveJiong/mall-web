@@ -3,15 +3,6 @@
     <div class="nav">
       <div class="w">
         <div>{{categoryName}}</div>
-        <!-- <a href="javascript:;" :class="{active:sortType===1}" @click="reset()">综合排序</a>
-        <a href="javascript:;" @click="sortByPrice(1)" :class="{active:sortType===2}">价格从低到高</a>
-        <a href="javascript:;" @click="sortByPrice(-1)" :class="{active:sortType===3}">价格从高到低</a>
-        <div class="price-interval">
-          <input type="number" class="input" placeholder="价格" v-model="min">
-          <span style="margin: 0 5px"> - </span>
-          <input type="number" placeholder="价格" v-model="max">
-          <y-button text="确定" classStyle="main-btn" @btnClick="reset" style="margin-left: 10px;"></y-button>
-        </div> -->
       </div>
       <div>
 
@@ -25,16 +16,6 @@
           <mall-goods v-for="(item,i) in goods" :key="i" :msg="item"></mall-goods>
         </div>
 
-        <!-- <el-pagination
-          v-if="!noResult&&!error"
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page="currentPage"
-          :page-sizes="[8, 20, 40, 80]"
-          :page-size="pageSize"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="total">
-        </el-pagination> -->
       </div>
       <div class="no-info" v-if="noResult">
         <div class="no-data">
@@ -62,31 +43,13 @@
         goods: [],
         noResult: false,
         error: false,
-        min: '',
-        max: '',
         loading: true,
-        timer: null,
-        sortType: 1,
         windowHeight: null,
         windowWidth: null,
-        sort: '',
-        currentPage: 1,
-        total: 0,
-        pageSize: 20,
         categoryName: this.$route.query.categoryName
       }
     },
     methods: {
-      handleSizeChange (val) {
-        this.pageSize = val
-        this._getAllGoods()
-        this.loading = true
-      },
-      handleCurrentChange (val) {
-        this.currentPage = val
-        this._getAllGoods()
-        this.loading = true
-      },
       async _getAllGoods () {
         let categoryId = this.$route.query.categoryId
         let goodsRes = await getGoods('1', categoryId)
@@ -100,36 +63,6 @@
           this.error = true
         }
         this.loading = false
-        // getAllGoods(params).then(res => {
-        //   if (res.success === true) {
-        //     this.total = res.result.total
-        //     this.goods = res.result.data
-        //     this.noResult = false
-        //     if (this.total === 0) {
-        //       this.noResult = true
-        //     }
-        //     this.error = false
-        //   } else {
-        //     this.error = true
-        //   }
-        //   this.loading = false
-        // })
-      },
-      // 默认排序
-      reset () {
-        this.sortType = 1
-        this.sort = ''
-        this.currentPage = 1
-        this.loading = true
-        this._getAllGoods()
-      },
-      // 价格排序
-      sortByPrice (v) {
-        v === 1 ? this.sortType = 2 : this.sortType = 3
-        this.sort = v
-        this.currentPage = 1
-        this.loading = true
-        this._getAllGoods()
       }
     },
     created () {
