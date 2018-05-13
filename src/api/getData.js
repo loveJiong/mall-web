@@ -70,6 +70,8 @@ export const getCategoryList = (companyId) => http('/goods/category', 'GET', hea
 
 export const getGoods = (companyId, categoryId) => http('/goods/list', 'GET', headers, { companyId, categoryId })
 
+export const getGoodsDetail = (companyId, goodsNo) => http('/goods/info', 'GET', headers, { companyId, goodsNo })
+
 export const bindCustomer = (customerId, companyCode, customerCode) => http('/companyinfo/bindCustomer', 'GET', headers, { customerId, companyCode, customerCode })
 
 export const getAddress = (customerId) => http('/customer/address/list', 'GET', headers, { customerId })
@@ -89,3 +91,13 @@ export const search = (companyId, q) => http('/goods/search', 'GET', headers, { 
 export const getIosApp = (ver) => http('http://dadisoft.cn:8080/PMBOX/BoxRequest', 'GET', headers, { type: 'checksoftupdate', app: 'phoneios', ver })
 
 export const getAndroidApp = (ver) => http('http://dadisoft.cn:8080/PMBOX/BoxRequest', 'GET', headers, { type: 'checksoftupdate', app: 'phoneandroid', ver })
+
+export const getBanner = (companyId) => http('/companyinfo/adpic', 'GET', headers, { companyId })
+
+export const getCart = (customerId, companyId) => http('/shoppingcar/get', 'GET', headers, { customerId, companyId })
+
+export const addCart = (customerId, companyId, data) => http(`/shoppingcar/add?customerId=${customerId}&companyId=${companyId}`, 'POST', headers, data)
+
+export const updateCart = (customerId, companyId, data) => http(`/shoppingcar/update?customerId=${customerId}&companyId=${companyId}`, 'POST', headers, data)
+
+export const deleteCart = (customerId, companyId, data) => http(`/shoppingcar/delete?customerId=${customerId}&companyId=${companyId}`, 'POST', headers, data)

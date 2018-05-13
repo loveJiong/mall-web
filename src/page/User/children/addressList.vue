@@ -1,7 +1,7 @@
 <template>
   <div>
     <y-shelf title="收货地址">
-      <span slot="right"><y-button text="添加收货地址" style="margin: 0" @btnClick="update()"></y-button></span>
+      <span slot="right" v-if="this.isAdd"><y-button text="添加收货地址" style="margin: 0" @btnClick="update()"></y-button></span>
       <div slot="content">
         <!--标题-->
         <div class="table-title">
@@ -9,18 +9,18 @@
         </div>
         <div v-if="addList.length">
           <div class="address-item" v-for="(item,i) in addList" :key="i">
-            <div class="name">{{item.userName}}</div>
-            <div class="address-msg">{{item.streetName}}</div>
-            <div class="telephone">{{item.tel}}</div>
-            <div class="defalut">
+            <div class="name">{{item.linkMan}}</div>
+            <div class="address-msg">{{item.companyAddress}}</div>
+            <div class="telephone">{{item.linkTelephone}}</div>
+            <!-- <div class="defalut">
               <a @click="changeDef(item)"
                  href="javascript:;"
                  v-text="item.isDefault?'( 默认地址 )':'设为默认'"
                  :class="{'defalut-address':item.isDefault}"></a>
-            </div>
+            </div> -->
             <div class="operation">
               <el-button type="primary" icon="edit" size="small"  @click="update(item)"></el-button>
-              <el-button type="danger" icon="delete" size="small" :data-id="item.addressId" @click="del(item.addressId,i)"></el-button>
+              <!-- <el-button type="danger" icon="delete" size="small" :data-id="item.addressId" @click="del(item.addressId,i)"></el-button> -->
             </div>
           </div>
         </div>
@@ -35,30 +35,58 @@
       </div>
     </y-shelf>
     <y-popup :open="popupOpen" @close='popupOpen=false' :title="popupTitle">
-      <div slot="content" class="md" :data-id="msg.addressId">
+      <div slot="content" class="md">
         <div>
-          <input type="text" placeholder="收货人姓名" v-model="msg.userName">
+          <span>公司名称</span>
+          <input type="text" placeholder="公司名称" v-model="msg.companyName">
         </div>
         <div>
-          <input type="number" placeholder="手机号码" v-model="msg.tel">
+          <span>联系人</span>
+          <input type="text" placeholder="联系人" v-model="msg.linkMan">
         </div>
         <div>
-          <input type="text" placeholder="收货地址" v-model="msg.streetName">
+          <span>税号</span>
+          <input type="text" placeholder="税号" v-model="msg.companySh">
         </div>
         <div>
-          <el-checkbox class="auto-login" v-model="msg.isDefault">设为默认</el-checkbox>
+          <span>地址</span>
+          <input type="text" placeholder="地址" v-model="msg.companyAddress">
+        </div>
+        <div>
+          <span>城市</span>
+          <input type="text" placeholder="城市" v-model="msg.city">
+        </div>
+        <div>
+          <span>省份</span>
+          <input type="text" placeholder="省份" v-model="msg.province">
+        </div>
+        <div>
+          <span>国家</span>
+          <input type="text" placeholder="国家" v-model="msg.country">
+        </div>
+        <div>
+          <span>邮政编码</span>
+          <input type="text" placeholder="邮政编码" v-model="msg.postalCode">
+        </div>
+        <div>
+          <span>联系电话</span>
+          <input type="text" placeholder="联系电话" v-model="msg.linkTelephone">
+        </div>
+        <div>
+          <span>电子邮箱</span>
+          <input type="text" placeholder="电子邮箱" v-model="msg.linkEmail">
         </div>
         <y-button text='保存'
                   class="btn"
                   :classStyle="btnHighlight?'main-btn':'disabled-btn'"
-                  @btnClick="save({userId:userId,addressId:msg.addressId,userName:msg.userName,tel:msg.tel,streetName:msg.streetName,isDefault:msg.isDefault})">
+                  @btnClick="save(msg)">
         </y-button>
       </div>
     </y-popup>
   </div>
 </template>
 <script>
-  import { addressList, addressUpdate, addressAdd, addressDel } from '/api/goods'
+  import { getAddress, updateAddress, newAddress } from '/api/getData'
   import YButton from '/components/YButton'
   import YPopup from '/components/popup'
   import YShelf from '/components/shelf'
@@ -76,13 +104,14 @@
           streetName: '',
           isDefault: false
         },
-        userId: ''
+        userId: '',
+        isAdd: false
       }
     },
     computed: {
       btnHighlight () {
         let msg = this.msg
-        return msg.userName && msg.tel && msg.streetName
+        return msg.companyName && msg.linkMan && msg.companySh && msg.companyAddress && msg.city && msg.province && msg.country && msg.postalCode && msg.linkTelephone && msg.linkEmail
       }
     },
     methods: {
@@ -91,30 +120,32 @@
           message: m
         })
       },
-      _addressList () {
-        addressList({userId: this.userId}).then(res => {
-          let data = res.result
-          if (data.length) {
-            this.addList = res.result
-            this.addressId = res.result[0].addressId || '1'
-          } else {
-            this.addList = []
-          }
-        })
+      async _addressList () {
+        let addressRes = await getAddress(this.userId)
+        if (addressRes.success && addressRes.data.length > 0) {
+          this.addList = [addressRes.data[0]]
+        } else if (addressRes.success && addressRes.data.length === 0) {
+          this.isAdd = true
+        }
       },
-      _addressUpdate (params) {
-        addressUpdate(params).then(res => {
+      async _addressUpdate (data) {
+        let updateAddressRes = await updateAddress(data)
+        if (updateAddressRes.success) {
+          this.$message.success('恭喜您，更新地址成功！')
           this._addressList()
-        })
+        } else {
+          this.$message.error('更新地址失败，请稍后重试。')
+        }
       },
-      _addressAdd (params) {
-        addressAdd(params).then(res => {
-          if (res.success === true) {
-            this._addressList()
-          } else {
-            this.message(res.message)
-          }
-        })
+      async _addressAdd (data) {
+        data.customerId = this.userId
+        let newAddressRes = await newAddress(data)
+        if (newAddressRes.success) {
+          this.$message.success('恭喜您，新增地址成功！')
+          this._addressList()
+        } else {
+          this.$message.error('新增地址失败，请稍后重试。')
+        }
       },
       changeDef (item) {
         if (!item.isDefault) {
@@ -125,41 +156,46 @@
       },
       // 保存
       save (p) {
+        console.log(p)
         this.popupOpen = false
-        if (p.addressId) {
+        if (!this.isAdd) {
           this._addressUpdate(p)
         } else {
-          delete p.addressId
           this._addressAdd(p)
         }
       },
       // 删除
-      del (addressId, i) {
-        addressDel({addressId: addressId}).then(res => {
-          if (res.success === true) {
-            this.addList.splice(i, 1)
-          } else {
-            this.message('删除失败')
-          }
-        })
-      },
+      // del (addressId, i) {
+      //   addressDel({addressId: addressId}).then(res => {
+      //     if (res.success === true) {
+      //       this.addList.splice(i, 1)
+      //     } else {
+      //       this.message('删除失败')
+      //     }
+      //   })
+      // },
       // 修改
       update (item) {
         this.popupOpen = true
         if (item) {
           this.popupTitle = '管理收货地址'
-          this.msg.userName = item.userName
-          this.msg.tel = item.tel
-          this.msg.streetName = item.streetName
-          this.msg.isDefault = item.isDefault
-          this.msg.addressId = item.addressId
+          this.msg = {
+            companyName: item.companyName,
+            linkMan: item.linkMan,
+            companySh: item.companySh,
+            companyAddress: item.companyAddress,
+            city: item.city,
+            province: item.province,
+            country: item.country,
+            postalCode: item.postalCode,
+            linkTelephone: item.linkTelephone,
+            linkEmail: item.linkEmail,
+            id: item.id,
+            customerId: item.customerId
+          }
         } else {
           this.popupTitle = '新增收货地址'
-          this.msg.userName = ''
-          this.msg.tel = ''
-          this.msg.streetName = ''
-          this.msg.isDefault = false
-          this.msg.addressId = ''
+          this.msg = {}
         }
       }
     },
@@ -225,7 +261,7 @@
       }
     }
     .operation {
-      width: 135px;
+      width: 215px;
       a {
         padding: 10px 5px;
       }
@@ -252,8 +288,12 @@
     > div {
       text-align: left;
       margin-bottom: 15px;
+      > span {
+        display: inline-block;
+        width: 15%;
+      }
       > input {
-        width: 100%;
+        width: 84%;
         height: 50px;
         font-size: 18px;
         padding: 10px 20px;

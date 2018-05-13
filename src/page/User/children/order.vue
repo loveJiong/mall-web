@@ -12,7 +12,7 @@
                 </div>
                 <div class="f-bc">
                   <span class="num">数量：{{item.count}}</span>
-                  <span class="sub-total">实付金额：€{{item.hj}}</span>
+                  <span class="sub-total">金额：€{{(+item.hj).toFixed(2)}}</span>
                 </div>
               </div>
               <div class="last">

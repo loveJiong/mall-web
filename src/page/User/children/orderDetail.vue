@@ -33,7 +33,7 @@
           <!--合计-->
           <div class="order-discount-line">
             <p style="font-size: 14px;font-weight: bolder;"> <span style="padding-right:47px">商品总计：</span>
-              <span style="font-size: 16px;font-weight: 500;line-height: 32px;">€ {{orderTotal}}</span>
+              <span style="font-size: 16px;font-weight: 500;line-height: 32px;">€ {{(+orderTotal).toFixed(2)}}</span>
             </p>
           </div>
         </div>

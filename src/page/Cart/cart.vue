@@ -21,10 +21,10 @@
                   <div class="cart-top-items">
                     <div class="cart-items clearfix">
                       <!--勾选-->
-                      <div class="items-choose">
+                      <!-- <div class="items-choose">
                       <span class="blue-checkbox-new " :class="{'checkbox-on':item.checked === '1'}"
                             @click="editCart('check',item)"></span>
-                      </div>
+                      </div> -->
                       <!--图片-->
                       <div class="items-thumb fl">
                         <img :alt="item.productName"
@@ -48,16 +48,16 @@
                       <!--商品数量-->
                       <div>
                         <!--总价格-->
-                        <div class="subtotal" style="font-size: 14px">€ {{item.salePrice * item.productNum}}</div>
+                        <div class="subtotal" style="font-size: 14px">€ {{(item.salePrice * item.productNum).toFixed(2)}}</div>
                         <!--数量-->
                         <buy-num :num="item.productNum"
                                  :id="item.productId"
                                  :checked="item.checked"
+                                 :salePrice="item.salePrice"
                                  style="height: 140px;
                                    display: flex;
                                    align-items: center;
                                    justify-content: center;"
-                                 :limit="item.limitNum"
                                  @edit-num="EditNum"
                         >
                         </buy-num>
@@ -72,7 +72,7 @@
           </div>
           <div class="cart-bottom-bg fix-bottom">
             <div class="fix-bottom-inner">
-              <div class="cart-bar-operation">
+              <!-- <div class="cart-bar-operation">
                 <div>
                   <div class="choose-all">
                     <span :class="{'checkbox-on':checkAllFlag}" class="blue-checkbox-new" @click="editCheckAll"></span>
@@ -81,22 +81,22 @@
                   <div class="delete-choose-goods">删除选中的商品
                   </div>
                 </div>
-              </div>
+              </div> -->
               <div class="shipping">
                 <div class="shipping-box">
-                  <div class="shipping-total shipping-num"><h4
-                    class="highlight">已选择 <i v-text="checkNum"></i> 件商品</h4>
-                    <h5>共计 <i v-text="totalNum"></i> 件商品</h5></div>
-                  <div class="shipping-total shipping-price"><h4
-                    class="highlight">应付总额：<span>€</span><i v-text="checkPrice"></i>
-                  </h4>
-                    <h5 class="shipping-tips ng-scope">应付总额不含运费</h5>
+                  <div class="shipping-total shipping-num">
+                    <h4 class="highlight">共计 <i v-text="totalNum"></i> 件商品</h4>
+                    <!-- <h5>共计 <i v-text="totalNum"></i> 件商品</h5> -->
+                  </div>
+                  <div class="shipping-total shipping-price">
+                    <h4 class="highlight">总额：<span>€</span><i v-text="totalPrice"></i></h4>
+                    <!-- <h5 class="shipping-tips ng-scope">应付总额不含运费</h5> -->
                   </div>
                 </div>
-                <y-button :classStyle="checkNum > 0 && submit?'main-btn':'disabled-btn'"
-                          class="big-main-btn"
+                <y-button
+                          class="big-main-btn main-btn"
                           style="margin: 0;width: 130px;height: 50px;line-height: 50px;font-size: 16px"
-                          :text="checkoutNow" @btnClick="checkout"></y-button>
+                          :text="commitNow" @btnClick="commit"></y-button>
               </div>
             </div>
           </div>
@@ -106,19 +106,15 @@
           </div>
           <p style="text-align: center;padding: 20px;color: #8d8d8d">你的购物车空空如也</p>
           <div style="text-align: center">
-            <router-link to="/goods">
-              <y-button text="现在选购" style="width: 150px;height: 40px;line-height: 38px;color: #8d8d8d"></y-button>
-            </router-link>
           </div>
 
         </div>
       </div>
     </div>
-    <y-footer></y-footer>
   </div>
 </template>
 <script>
-  import { cartEdit, editCheckAll, cartDel } from '/api/goods'
+  import { deleteCart, updateCart, commitOrder, getAddress } from '/api/getData'
   import { mapMutations, mapState } from 'vuex'
   import YButton from '/components/YButton'
   import YHeader from '/common/header'
@@ -129,7 +125,7 @@
     data () {
       return {
         userId: 0,
-        checkoutNow: '现在结算',
+        commitNow: '上传订单',
         submit: true
       }
     },
@@ -138,17 +134,17 @@
         ['cartList']
       ),
       // 是否全选
-      checkAllFlag () {
-        return this.checkedCount === this.cartList.length
-      },
+      // checkAllFlag () {
+      //   return this.checkedCount === this.cartList.length
+      // },
       // 勾选的数量
-      checkedCount () {
-        var i = 0
-        this.cartList && this.cartList.forEach((item) => {
-          if (item.checked === '1') i++
-        })
-        return Number(i)
-      },
+      // checkedCount () {
+      //   var i = 0
+      //   this.cartList && this.cartList.forEach((item) => {
+      //     if (item.checked === '1') i++
+      //   })
+      //   return Number(i)
+      // },
       // 计算总数量
       totalNum () {
         var totalNum = 0
@@ -157,90 +153,171 @@
         })
         return Number(totalNum)
       },
-      // 选中的总价格
-      checkPrice () {
+      // 总价格
+      totalPrice () {
         var totalPrice = 0
         this.cartList && this.cartList.forEach(item => {
-          if (item.checked === '1') {
-            totalPrice += (item.productNum * item.salePrice)
-          }
+          totalPrice += (item.productNum * item.salePrice)
         })
+        totalPrice = totalPrice.toFixed(2)
         return totalPrice
-      },
-      // 选中的商品数量
-      checkNum () {
-        var checkNum = 0
-        this.cartList && this.cartList.forEach(item => {
-          if (item.checked === '1') {
-            checkNum += (item.productNum)
-          }
-        })
-        return checkNum
       }
+      // 选中的商品数量
+      // checkNum () {
+      //   var checkNum = 0
+      //   this.cartList && this.cartList.forEach(item => {
+      //     if (item.checked === '1') {
+      //       checkNum += (item.productNum)
+      //     }
+      //   })
+      //   return checkNum
+      // }
     },
     methods: {
       ...mapMutations([
-        'INIT_BUYCART', 'EDIT_CART'
+        'INIT_BUYCART', 'EDIT_CART', 'CLEAR_CART'
       ]),
       goodsDetails (id) {
         window.open(window.location.origin + '#/goodsDetails?productId=' + id)
       },
       // 全选
-      editCheckAll () {
-        let checkAll = !this.checkAllFlag
-        editCheckAll({userId: this.userId, checked: checkAll}).then(res => {
-          this.EDIT_CART({checked: checkAll})
-        })
-      },
+      // editCheckAll () {
+      //   let checkAll = !this.checkAllFlag
+      //   editCheckAll({userId: this.userId, checked: checkAll}).then(res => {
+      //     this.EDIT_CART({checked: checkAll})
+      //   })
+      // },
       // 修改购物车
-      _cartEdit (userId, productId, productNum, checked) {
-        cartEdit(
-          {
-            userId,
-            productId,
-            productNum,
-            checked
-          }
-        ).then(res => {
-          if (res.success === true) {
-            this.EDIT_CART(
-              {
-                productId,
-                checked,
-                productNum
-              }
-            )
-          }
-        })
-      },
-      // 修改购物车
-      editCart (type, item) {
-        if (type && item) {
-          let checked = item.checked
-          let productId = item.productId
-          let productNum = item.productNum
-          // 勾选
-          if (type === 'check') {
-            let newChecked = checked === '1' ? '0' : '1'
-            this._cartEdit(this.userId, productId, productNum, newChecked)
-          }
-        } else {
-          console.log('缺少所需参数')
+      _cartEdit (userId, productId, productNum, salePrice) {
+        let data = {
+          goods: [{
+            no: productId,
+            count: productNum,
+            price: salePrice,
+            totalprice: salePrice * productNum
+          }]
         }
+        console.log(data)
+        updateCart(userId, '1', data)
+        this.EDIT_CART({
+          productId,
+          productNum
+        })
+        // cartEdit(
+        //   {
+        //     userId,
+        //     productId,
+        //     productNum,
+        //     checked
+        //   }
+        // ).then(res => {
+        //   if (res.success === true) {
+        //     this.EDIT_CART(
+        //       {
+        //         productId,
+        //         checked,
+        //         productNum
+        //       }
+        //     )
+        //   }
+        // })
       },
-      EditNum (productNum, productId, checked) { // 数量
-        this._cartEdit(this.userId, productId, productNum, checked)
+      // 修改购物车
+      // editCart (type, item) {
+      //   if (type && item) {
+      //     let checked = item.checked
+      //     let productId = item.productId
+      //     let productNum = item.productNum
+      //     // 勾选
+      //     if (type === 'check') {
+      //       let newChecked = checked === '1' ? '0' : '1'
+      //       this._cartEdit(this.userId, productId, productNum, newChecked)
+      //     }
+      //   } else {
+      //     console.log('缺少所需参数')
+      //   }
+      // },
+      EditNum (productNum, productId, salePrice) { // 数量
+        this._cartEdit(this.userId, productId, productNum, salePrice)
       },
       // 删除整条购物车
-      cartdel (productId) {
-        cartDel({userId: this.userId, productId}).then(res => {
+      async cartdel (productId) {
+        let data = {
+          goods: [{
+            no: productId
+          }]
+        }
+        let deleteRes = await deleteCart(this.userId, '1', data)
+        if (deleteRes.success) {
           this.EDIT_CART({productId})
+          this.$forceUpdate()
+        }
+      },
+      getOrderData () {
+        return this.cartList.map(item => {
+          let result = {
+            goodNO: item.productId,
+            count: item.productNum,
+            price: item.salePrice,
+            totalPrice: (item.productNum * item.salePrice).toFixed(2)
+          }
+          return result
         })
       },
-      checkout () {
-        this.checkoutNow = '结算中...'
-        this.submit = false
-        this.$router.push({path: 'checkout'})
+      async clearCart () {
+        let data = {
+          goods: this.cartList.map(item => {
+            return { no: item.productId }
+          })
+        }
+        let deleteRes = await deleteCart(this.userId, '1', data)
+        if (deleteRes.success) {
+          this.CLEAR_CART()
+          this.$forceUpdate()
+        }
+      },
+      commit () {
+        this.$messageBox.confirm('确认上传当前订单？', '上传确认', {
+          confirmButtonText: '确认上传',
+          cancelButtonText: '取消',
+          type: 'success'
+        }).then(async () => {
+          let addressRes = await getAddress(this.userId)
+          if (addressRes.success && addressRes.data.length > 0 && addressRes.data[0].companyAddress && addressRes.data[0].companyName && addressRes.data[0].linkTelephone) {
+            let data = {
+              companyId: '1',
+              customerId: this.userId,
+              bz: '',
+              goods: this.getOrderData()
+            }
+            let commitRes = await commitOrder(data)
+            this.commitNow = '上传中...'
+            this.submit = false
+            if (commitRes.success) {
+              this.$message.success('上传订单成功！')
+              this.clearCart()
+            } else {
+              this.$message.error('上传订单失败，请稍后重试。')
+            }
+            this.commitNow = '上传订单'
+            this.submit = true
+          } else if (addressRes.success) {
+            this.alertAddAddress()
+          }
+        }, () => {
+          console.log('cancel')
+        })
+      },
+      alertAddAddress () {
+        this.$messageBox.confirm('您当前没完善收货地址！', '提示', {
+          confirmButtonText: '前去完善',
+          cancelButtonText: '取消上传',
+          type: 'warning'
+        }).then(() => {
+          this.$router.push('/user/addressList')
+        }, () => {
+          console.log('cancel')
+        })
       }
     },
     mounted () {
@@ -499,7 +576,6 @@
         padding-right: 0;
       }
       &.shipping-num i {
-        width: 28px;
         display: inline-block;
         text-align: center;
       }

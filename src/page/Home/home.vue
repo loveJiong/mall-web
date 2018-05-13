@@ -38,6 +38,7 @@
 </template>
 <script>
   import { mapState } from 'vuex'
+  import { getBanner } from '/api/getData'
   import YShelf from '/components/shelf'
   import product from '/components/product'
   import mallCategory from '/components/mallCategory'
@@ -63,6 +64,12 @@
       ...mapState(['categoryList'])
     },
     methods: {
+      async getBanner () {
+        let bannerRes = await getBanner('1')
+        if (bannerRes.success) {
+          // this.banner = bannerRes.data
+        }
+      },
       autoPlay () {
         this.mark++
         if (this.mark > this.banner.length - 1) {
@@ -127,6 +134,7 @@
       }
     },
     created () {
+      this.getBanner()
       this.play()
     },
     components: {

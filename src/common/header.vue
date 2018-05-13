@@ -42,9 +42,9 @@
                       <li>
                         <router-link to="/user/orderList">我的订单</router-link>
                       </li>
-                      <li>
+                      <!-- <li>
                         <router-link to="/user/information">账号资料</router-link>
-                      </li>
+                      </li> -->
                       <li>
                         <router-link to="/user/addressList">收货地址</router-link>
                       </li>
@@ -100,7 +100,7 @@
                       <!--总件数-->
                       <div class="nav-cart-total"><p>共 <strong>{{totalNum}}</strong> 件商品</p> <h5>合计：<span
                         class="price-icon">€</span><span
-                        class="price-num">{{totalPrice}}</span></h5>
+                        class="price-num">{{totalPrice.toFixed(2)}}</span></h5>
                         <h6>
                           <y-button classStyle="main-btn"
                                     style="height: 40px;width: 100%;margin: 0;color: #fff;font-size: 14px;line-height: 38px"
@@ -166,8 +166,8 @@
 <script>
   import YButton from '/components/YButton'
   import { mapMutations, mapState } from 'vuex'
-  import { getCartList, cartDel, getQuickSearch } from '/api/goods'
-  import { getCategoryList } from '/api/getData.js'
+  import { getQuickSearch } from '/api/goods'
+  import { getCategoryList, getCart, deleteCart } from '/api/getData.js'
   import { setStore, getStore, removeStore } from '/utils/storage'
   // import store from '../store/'
   import 'element-ui/lib/theme-default/index.css'
@@ -309,20 +309,38 @@
         this.SHOW_CART({showCart: state})
       },
       // 登陆时获取一次购物车商品
-      _getCartList () {
-        getCartList({userId: getStore('userId')}).then(res => {
-          if (res.success === true) {
-            setStore('buyCart', res.result)
-          }
-          // 重新初始化一次本地数据
-        }).then(this.INIT_BUYCART)
+      async _getCartList () {
+        let cartRes = await getCart(getStore('userId'), '1')
+        console.log(cartRes)
+        if (cartRes.success) {
+          setStore('buyCart', dataFormat(cartRes.data))
+          this.INIT_BUYCART()
+        }
+        function dataFormat (data) {
+          return data.map(item => {
+            let result = {
+              productId: item.no,
+              salePrice: item.price,
+              productName: item.name,
+              productImg: item.url,
+              productNum: item.count
+            }
+            return result
+          })
+        }
       },
       // 删除商品
-      delGoods (productId) {
+      async delGoods (productId) {
         if (this.login) { // 登陆了
-          cartDel({userId: getStore('userId'), productId}).then(res => {
+          let data = {
+            goods: [{
+              no: productId
+            }]
+          }
+          let deleteRes = await deleteCart(getStore('userId'), '1', data)
+          if (deleteRes.success) {
             this.EDIT_CART({productId})
-          })
+          }
         } else {
           this.EDIT_CART({productId})
         }
@@ -369,7 +387,7 @@
     },
     mounted () {
       if (this.login) {
-        // this._getCartList()
+        this._getCartList()
       } else {
         this.INIT_BUYCART()
       }

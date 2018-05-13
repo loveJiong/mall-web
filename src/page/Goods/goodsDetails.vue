@@ -56,7 +56,7 @@
   </div>
 </template>
 <script>
-  // import { addCart } from '/api/goods'
+  import { addCart, getGoodsDetail } from '/api/getData'
   import { mapMutations, mapState } from 'vuex'
   import YShelf from '/components/shelf'
   import BuyNum from '/components/buynum'
@@ -79,6 +79,12 @@
     },
     methods: {
       ...mapMutations(['ADD_CART', 'ADD_ANIMATION', 'SHOW_CART']),
+      async getGoodsDetail (productId) {
+        let goodsDetailRes = await getGoodsDetail('1', productId)
+        if (goodsDetailRes.success) {
+          this.product = goodsDetailRes.data
+        }
+      },
       zkPrice (price, zk) {
         let num = price
         if (zk !== '0' && zk !== '') {
@@ -90,20 +96,25 @@
       addCart (product) {
         if (!this.showMoveImg) {     // 动画是否在运动
           if (this.login) { // 登录了 直接存在用户名下
-            // addCart({userId: this.userId, productId: id, productNum: this.productNum}).then(res => {
-            //   // 并不重新请求数据
-            //   this.ADD_CART({
-            //     productId: id,
-            //     salePrice: price,
-            //     productName: name,
-            //     productImg: img,
-            //     productNum: this.productNum
-            //   })
-            // })
+            let data = {
+              goods: [{
+                no: product.no,
+                count: this.productNum,
+                price: this.zkPrice(product.price, product.zk),
+                totalprice: this.zkPrice(product.price, product.zk) * this.productNum
+              }]
+            }
+            addCart(this.userId, '1', data)
+            this.ADD_CART({
+              productId: product.no,
+              salePrice: this.zkPrice(product.price, product.zk),
+              productName: product.name,
+              productImg: product.url,
+              productNum: this.productNum
+            })
           } else { // 未登录 vuex
             this.ADD_CART({
-              product,
-              productId: product.id,
+              productId: product.no,
               salePrice: this.zkPrice(product.price, product.zk),
               productName: product.name,
               productImg: product.url,
@@ -134,6 +145,7 @@
     },
     created () {
       this.product = JSON.parse(this.$route.query.good)
+      // this.getGoodsDetail(this.product.no)
       console.log(this.product)
       this.userId = getStore('userId')
     }

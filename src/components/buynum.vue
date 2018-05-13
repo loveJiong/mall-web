@@ -9,9 +9,9 @@
       <span class="num">
         <input type="text"
                :class="{show:show}"
-               v-model="Num>=limit?limit:Num"
+               v-model="Num"
                @blur="blur()"
-               maxlength="2">
+               maxlength="5">
                   <ul ref="ul">
                     <li v-for="i in numList" :key="i">{{i}}</li>
                   </ul>
@@ -36,7 +36,10 @@
       },
       limit: {
         type: Number,
-        default: 10
+        default: 9999
+      },
+      salePrice: {
+        type: [Number, String]
       }
     },
     computed: {},
@@ -62,10 +65,12 @@
         return false
       },
       blur () {
+        console.log(1)
         this.Num = this.Num > this.limit ? Number(this.limit) : Number(this.Num)
-        this.$emit('edit-num', this.Num, this.id, this.checked)
+        this.$emit('edit-num', this.Num, this.id, this.salePrice)
       },
       ani (opera) {
+        console.log(2)
         this.flag = false
         let n = this.Num
         this.numList = [n - 1, n, n + 1]
@@ -91,7 +96,7 @@
           this.domInt(ulStyle)
           this.flag = true
         })
-        this.$emit('edit-num', this.Num, this.id, this.checked)
+        this.$emit('edit-num', this.Num, this.id, this.salePrice)
       },
       domInt (domStyle) {
         domStyle.zIndex = '1'
