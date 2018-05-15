@@ -37,6 +37,8 @@ Vue.use(VueLazyload, {
 Vue.config.productionTip = false
 const whiteList = ['/home', '/goods', '/login', '/register', '/goodsDetails', '/thanks', '/search', '/refreshsearch', '/refreshgoods'] // 不需要登陆的页面
 router.beforeEach(function (to, from, next) {
+  let company = require('../static/json/company.json')
+  store.commit('SET_COMPANYID', company.id)
   let userInfo = getStore('userInfo')
   if (userInfo || whiteList.indexOf(to.path) !== -1) {
     userInfo && store.commit('RECORD_USERINFO', JSON.parse(userInfo))

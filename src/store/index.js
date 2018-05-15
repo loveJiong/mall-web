@@ -17,7 +17,8 @@ const state = {
   receiveInCart: false, // 是否进入购物车
   showCart: false, // 是否显示购物车
   // 自己加的新内容
-  categoryList: []
+  categoryList: [],
+  companyId: '1'
 }
 
 export default new Vuex.Store({

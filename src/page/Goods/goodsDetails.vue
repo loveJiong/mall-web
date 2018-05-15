@@ -6,7 +6,7 @@
         <div class="gallery">
           <div class="thumb">
             <div class="big">
-              <img :src="product.url" :alt="product.name">
+              <img :src="product.picurl" :alt="product.name">
             </div>
           </div>
         </div>
@@ -75,12 +75,12 @@
       }
     },
     computed: {
-      ...mapState(['login', 'showMoveImg', 'showCart'])
+      ...mapState(['login', 'showMoveImg', 'showCart', 'companyId'])
     },
     methods: {
       ...mapMutations(['ADD_CART', 'ADD_ANIMATION', 'SHOW_CART']),
-      async getGoodsDetail (productId) {
-        let goodsDetailRes = await getGoodsDetail('1', productId)
+      async getGoodsDetail () {
+        let goodsDetailRes = await getGoodsDetail(this.companyId, this.$route.query.productId)
         if (goodsDetailRes.success) {
           this.product = goodsDetailRes.data
         }
@@ -104,12 +104,12 @@
                 totalprice: this.zkPrice(product.price, product.zk) * this.productNum
               }]
             }
-            addCart(this.userId, '1', data)
+            addCart(this.userId, this.companyId, data)
             this.ADD_CART({
               productId: product.no,
               salePrice: this.zkPrice(product.price, product.zk),
               productName: product.name,
-              productImg: product.url,
+              productImg: product.picurl,
               productNum: this.productNum
             })
           } else { // 未登录 vuex
@@ -117,7 +117,7 @@
               productId: product.no,
               salePrice: this.zkPrice(product.price, product.zk),
               productName: product.name,
-              productImg: product.url,
+              productImg: product.picurl,
               productNum: this.productNum
             })
           }
@@ -127,7 +127,7 @@
           let elLeft = dom.getBoundingClientRect().left + (dom.offsetWidth / 2)
           let elTop = dom.getBoundingClientRect().top + (dom.offsetHeight / 2)
           // 需要触发
-          this.ADD_ANIMATION({moveShow: true, elLeft: elLeft, elTop: elTop, img: product.url})
+          this.ADD_ANIMATION({moveShow: true, elLeft: elLeft, elTop: elTop, img: product.picurl})
           if (!this.showCart) {
             this.SHOW_CART({showCart: true})
           }
@@ -143,11 +143,12 @@
     components: {
       YShelf, BuyNum, YButton
     },
+    watch: {
+      '$route': 'getGoodsDetail'
+    },
     created () {
-      this.product = JSON.parse(this.$route.query.good)
-      // this.getGoodsDetail(this.product.no)
-      console.log(this.product)
       this.userId = getStore('userId')
+      this.getGoodsDetail()
     }
   }
 </script>

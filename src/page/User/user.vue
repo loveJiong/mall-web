@@ -1,7 +1,6 @@
 <template>
   <div class="layout-container">
     <y-header>
-      <div slot="nav"></div>
     </y-header>
     <div class="w">
       <div class="content">

@@ -5,7 +5,7 @@
         <div class="w-box">
           <div class="nav-logo">
             <h1 @click="changePage(1)">
-              <router-link to="/" title="XMall商城官网">XMall商城</router-link>
+              <router-link to="/" title="商城官网">商城</router-link>
             </h1>
           </div>
           <div class="right-box">
@@ -166,8 +166,7 @@
 <script>
   import YButton from '/components/YButton'
   import { mapMutations, mapState } from 'vuex'
-  import { getQuickSearch } from '/api/goods'
-  import { getCategoryList, getCart, deleteCart } from '/api/getData.js'
+  import { getCategoryList, getCart, deleteCart, search } from '/api/getData.js'
   import { setStore, getStore, removeStore } from '/utils/storage'
   // import store from '../store/'
   import 'element-ui/lib/theme-default/index.css'
@@ -191,7 +190,7 @@
     },
     computed: {
       ...mapState([
-        'cartList', 'login', 'receiveInCart', 'showCart', 'userInfo', 'categoryList'
+        'cartList', 'login', 'receiveInCart', 'showCart', 'userInfo', 'categoryList', 'companyId'
       ]),
       // 计算价格
       totalPrice () {
@@ -249,7 +248,7 @@
         }
       },
       async getCategoryList () {
-        let categoryListRes = await getCategoryList('1')
+        let categoryListRes = await getCategoryList(this.companyId)
         if (categoryListRes.success) {
           this.SET_CATEGORYLIST(categoryListRes.data)
           console.log(this.categoryList)
@@ -266,24 +265,23 @@
         window.open(routeData.href, '_blank')
       },
       // 搜索框提示
-      loadAll () {
-        getQuickSearch(this.input).then(res => {
-          var array = []
-          var maxSize = 5
-          if (res.hits.hits.length <= 5) {
-            maxSize = res.hits.hits.length
+      async loadAll () {
+        let searchRes = await search(this.companyId, this.input)
+        if (searchRes.success) {
+          let maxSize = 5
+          let arr = []
+          console.log(searchRes)
+          if (searchRes.data.length <= 5) {
+            maxSize = searchRes.data.length
           }
-          for (var i = 0; i < maxSize; i++) {
-            var obj = {}
-            obj.value = res.hits.hits[i]._source.productName
-            array.push(obj)
+          for (let index = 0; index < maxSize; index++) {
+            let obj = {}
+            obj.value = searchRes.data[index].name
+            obj.productId = searchRes.data[index].no
+            arr.push(obj)
           }
-          if (array.length !== 0) {
-            this.searchResults = array
-          } else {
-            this.searchResults = []
-          }
-        })
+          this.searchResults = arr
+        }
       },
       querySearchAsync (queryString, cb) {
         if (this.input === undefined) {
@@ -303,6 +301,7 @@
       },
       handleSelect (item) {
         this.input = item.value
+        this.handleIconClick()
       },
       // 购物车显示
       cartShowState (state) {
@@ -310,7 +309,7 @@
       },
       // 登陆时获取一次购物车商品
       async _getCartList () {
-        let cartRes = await getCart(getStore('userId'), '1')
+        let cartRes = await getCart(getStore('userId'), this.companyId)
         console.log(cartRes)
         if (cartRes.success) {
           setStore('buyCart', dataFormat(cartRes.data))
@@ -337,7 +336,7 @@
               no: productId
             }]
           }
-          let deleteRes = await deleteCart(getStore('userId'), '1', data)
+          let deleteRes = await deleteCart(getStore('userId'), this.companyId, data)
           if (deleteRes.success) {
             this.EDIT_CART({productId})
           }
@@ -350,7 +349,7 @@
       },
       // 控制顶部
       navFixed () {
-        if (this.$route.path === '/goods' || this.$route.path === '/home' || this.$route.path === '/goodsDetails' || this.$route.path === '/thanks') {
+        if (this.$route.path === '/goods' || this.$route.path === '/home' || this.$route.path === '/goodsDetails' || this.$route.path === '/thanks' || this.$route.path === '/search') {
           var st = document.documentElement.scrollTop || document.body.scrollTop
           st >= 100 ? this.st = true : this.st = false
           // 计算小圆当前位置
@@ -510,10 +509,10 @@
       display: flex;
       align-items: center;
       > a {
-        background: url(/static/images/global-logo-red@2x.png) no-repeat 50%;
+        background: url(/static/images/global-logo-red@2x.png) no-repeat;
         background-size: cover;
         display: block;
-        @include wh(50px, 40px);
+        @include wh(58px, 58px);
         text-indent: -9999px;
         background-position: 0 0;
       }

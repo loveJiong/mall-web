@@ -61,12 +61,13 @@
       }
     },
     computed: {
-      ...mapState(['categoryList'])
+      ...mapState(['categoryList', 'companyId'])
     },
     methods: {
       async getBanner () {
-        let bannerRes = await getBanner('1')
+        let bannerRes = await getBanner(this.companyId)
         if (bannerRes.success) {
+          console.log(bannerRes)
           // this.banner = bannerRes.data
         }
       },

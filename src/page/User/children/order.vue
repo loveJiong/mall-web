@@ -59,7 +59,7 @@
         })
       },
       async _orderList () {
-        let orderRes = await getOrder(this.userId, '1', 0)
+        let orderRes = await getOrder(this.userId, this.companyId, 0)
         if (orderRes.success) this.orderList = orderRes.data
         console.log(orderRes)
         this.loading = false
@@ -67,6 +67,7 @@
     },
     created () {
       this.userId = getStore('userId')
+      this.companyId = getStore('companyId')
       this._orderList()
     },
     components: {

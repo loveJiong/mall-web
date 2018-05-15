@@ -131,7 +131,7 @@
     },
     computed: {
       ...mapState(
-        ['cartList']
+        ['cartList', 'companyId']
       ),
       // 是否全选
       // checkAllFlag () {
@@ -198,7 +198,7 @@
           }]
         }
         console.log(data)
-        updateCart(userId, '1', data)
+        updateCart(userId, this.companyId, data)
         this.EDIT_CART({
           productId,
           productNum
@@ -247,7 +247,7 @@
             no: productId
           }]
         }
-        let deleteRes = await deleteCart(this.userId, '1', data)
+        let deleteRes = await deleteCart(this.userId, this.companyId, data)
         if (deleteRes.success) {
           this.EDIT_CART({productId})
           this.$forceUpdate()
@@ -271,7 +271,7 @@
             return { no: item.productId }
           })
         }
-        let deleteRes = await deleteCart(this.userId, '1', data)
+        let deleteRes = await deleteCart(this.userId, this.companyId, data)
         if (deleteRes.success) {
           this.CLEAR_CART()
           this.$forceUpdate()
@@ -286,7 +286,7 @@
           let addressRes = await getAddress(this.userId)
           if (addressRes.success && addressRes.data.length > 0 && addressRes.data[0].companyAddress && addressRes.data[0].companyName && addressRes.data[0].linkTelephone) {
             let data = {
-              companyId: '1',
+              companyId: this.companyId,
               customerId: this.userId,
               bz: '',
               goods: this.getOrderData()

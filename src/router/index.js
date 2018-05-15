@@ -37,13 +37,14 @@ export default new Router({
         {path: 'home', component: Home},
         {path: 'goods', component: GoodS},
         {path: 'goodsDetails', name: 'goodsDetails', component: goodsDetails},
-        {path: '/refreshgoods', name: 'refreshgoods', component: RefreshGoods}
+        {path: '/refreshgoods', name: 'refreshgoods', component: RefreshGoods},
+        {path: '/refreshsearch', name: 'refreshsearch', component: RefreshSearch},
+        {path: '/search', name: 'search', component: Search}
       ]
     },
     {path: '/login', name: 'login', component: Login},
     {path: '/register', name: 'register', component: Register},
     {path: '/cart', name: 'cart', component: Cart},
-    {path: '/refreshsearch', name: 'refreshsearch', component: RefreshSearch},
     {
       path: '/order',
       name: 'order',
@@ -51,7 +52,6 @@ export default new Router({
       children: [
         {path: 'paysuccess', name: 'paysuccess', component: paysuccess},
         {path: 'payment', name: 'payment', component: payment},
-        {path: '/search', name: 'search', component: Search},
         {path: 'alipay', name: 'alipay', component: Alipay},
         {path: 'wechat', name: 'wechat', component: Wechat},
         {path: 'qqpay', name: 'qqpay', component: QQpay}

@@ -8,7 +8,8 @@ import {
   REDUCE_CART,
   EDIT_CART,
   SET_CATEGORYLIST,
-  CLEAR_CART
+  CLEAR_CART,
+  SET_COMPANYID
 } from './mutation-types'
 import { setStore, getStore } from '../utils/storage'
 export default {
@@ -143,5 +144,9 @@ export default {
         state.categoryList[state.categoryList.length - 1].secondaryList.push(category)
       }
     })
+  },
+  [SET_COMPANYID] (state, companyId) {
+    state.companyId = companyId
+    setStore('companyId', companyId)
   }
 }

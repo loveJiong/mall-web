@@ -50,9 +50,7 @@
       ...mapMutations(['ADD_CART', 'ADD_ANIMATION', 'SHOW_CART']),
       goodsDetails (good) {
         let routeData = this.$router.resolve({name: 'goodsDetails'})
-        window.open(`${routeData.href}?good=${JSON.stringify(good)}`, '_blank')
-        // console.log(good)
-        // this.$router.push({name: 'goodsDetails', params: { good }})
+        window.open(`${routeData.href}?productId=${good.no}`, '_blank')
       },
       zkPrice (price, zk) {
         let num = price
@@ -73,7 +71,7 @@
                 totalprice: this.zkPrice(product.price, product.zk)
               }]
             }
-            addCart(getStore('userId'), '1', data)
+            addCart(getStore('userId'), this.companyId, data)
             this.ADD_CART({
               productId: product.no,
               salePrice: this.zkPrice(product.price, product.zk),
@@ -102,7 +100,7 @@
       }
     },
     computed: {
-      ...mapState(['login', 'showMoveImg', 'showCart'])
+      ...mapState(['login', 'showMoveImg', 'showCart', 'companyId'])
     },
     components: {
       YButton

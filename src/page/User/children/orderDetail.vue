@@ -74,7 +74,7 @@
     methods: {
       async _getOrderDet () {
         this.loading = true
-        let orderListRes = await getOrderDetail(this.userId, '1', this.orderGuid)
+        let orderListRes = await getOrderDetail(this.userId, this.companyId, this.orderGuid)
         if (orderListRes.success) {
           this.orderList = orderListRes.data
         }
@@ -83,6 +83,7 @@
     },
     created () {
       this.userId = getStore('userId')
+      this.companyId = getStore('companyId')
       this.orderGuid = this.$route.query.orderGuid
       this.orderTotal = this.$route.query.orderTotal
       this.orderTitle = '订单号：' + this.$route.query.orderId

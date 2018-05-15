@@ -4,9 +4,6 @@
       <div class="w">
         <div>{{categoryName}}</div>
       </div>
-      <div>
-
-      </div>
     </div>
 
     <div v-loading="loading" element-loading-text="加载中..." style="min-height: 35vw;">
@@ -33,6 +30,7 @@
   </div>
 </template>
 <script>
+  import { mapState } from 'vuex'
   import { getGoods } from '/api/getData.js'
   import mallGoods from '/components/mallGoods'
   import YButton from '/components/YButton'
@@ -49,10 +47,15 @@
         categoryName: this.$route.query.categoryName
       }
     },
+    computed: {
+      ...mapState(
+        ['companyId']
+      )
+    },
     methods: {
       async _getAllGoods () {
         let categoryId = this.$route.query.categoryId
-        let goodsRes = await getGoods('1', categoryId)
+        let goodsRes = await getGoods(this.companyId, categoryId)
         if (goodsRes.success && goodsRes.data.length > 0) {
           this.noResult = false
           this.error = false
