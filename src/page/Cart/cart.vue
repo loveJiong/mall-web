@@ -256,8 +256,9 @@
       getOrderData () {
         return this.cartList.map(item => {
           let result = {
+            categoryGUID: '',
             goodNO: item.productId,
-            count: item.productNum,
+            num: item.productNum,
             price: item.salePrice,
             totalPrice: (item.productNum * item.salePrice).toFixed(2)
           }
