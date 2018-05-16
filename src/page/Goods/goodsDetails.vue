@@ -102,7 +102,7 @@
           if (this.login) { // 登录了 直接存在用户名下
             let data = {
               goods: [{
-                no: product.no,
+                no: product.id,
                 count: this.productNum,
                 price: this.zkPrice(product.price, product.zk),
                 totalprice: this.zkPrice(product.price, product.zk) * this.productNum
@@ -110,7 +110,7 @@
             }
             addCart(this.userId, this.companyId, data)
             this.ADD_CART({
-              productId: product.no,
+              productId: product.id,
               salePrice: this.zkPrice(product.price, product.zk),
               productName: product.name,
               productImg: product.picurl,

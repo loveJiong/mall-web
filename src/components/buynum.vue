@@ -25,7 +25,12 @@
   export default {
     props: {
       item: {
-        type: [Object]
+        type: [Object],
+        default () {
+          return {
+            productNum: 1
+          }
+        }
       },
       num: {
         type: [Number],
