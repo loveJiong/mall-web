@@ -6,10 +6,10 @@
       <div class="bg" ref="bg"
         @mouseover="bgOver($refs.bg)" @mousemove="bgMove($refs.bg,$event)" @mouseout="bgOut($refs.bg)">
         <transition name="fade">
-          <div v-for="(item, i) in banner" v-if="i===mark" :key="i" style="position:absolute" @click="linkTo(item)" @mouseover="stopTimer" @mouseout="startTimer">
-            <img v-if="item.picUrl" class="img1" :src="item.picUrl"/>
-            <img v-if="item.picUrl2"  class="img2 a" :src="item.picUrl2"/>
-            <img v-if="item.picUrl3"  class="img3 b" :src="item.picUrl3"/>
+          <div v-for="(item, i) in banner" v-if="i===mark" :key="i" style="position:absolute" @mouseover="stopTimer" @mouseout="startTimer">
+            <img class="img1" :src="item.picurl"/>
+            <!-- <img class="img2 a" :src="item.picurl"/> -->
+            <!-- <img class="img3 b" :src="item.picurl"/> -->
           </div>
         </transition>
       </div>
@@ -68,7 +68,7 @@
         let bannerRes = await getBanner(this.companyId)
         if (bannerRes.success) {
           console.log(bannerRes)
-          // this.banner = bannerRes.data
+          this.banner = bannerRes.data
         }
       },
       autoPlay () {
@@ -90,20 +90,6 @@
       },
       stopTimer () {
         clearInterval(this.timer)
-      },
-      linkTo (item) {
-        if (item.type === 0 || item.type === 2) {
-          // 关联商品
-          this.$router.push({
-            path: '/goodsDetails',
-            query: {
-              productId: item.productId
-            }
-          })
-        } else {
-          // 完整链接
-          window.location.href = item.fullUrl
-        }
       },
       bgOver (e) {
         this.bgOpt.px = e.offsetLeft
@@ -183,7 +169,7 @@
         display: inline-block; 
         width: 15px; 
         height: 15px; 
-        background-color: whitesmoke; 
+        background-color: #000000; 
         border-radius: 8px; 
         margin-right: 10px; 
         cursor: pointer; 

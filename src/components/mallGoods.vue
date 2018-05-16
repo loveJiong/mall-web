@@ -18,11 +18,15 @@
                     classStyle="main-btn"
           ></y-button>
         </div>
-        <p v-if="msg.zk == '0' || msg.zk == ''">
+        <p v-if="!login" title="登陆后查看">
+          <span style="font-size:14px" v-if="msg.price">€</span>
+          ???
+        </p>
+        <p v-if="login && (msg.zk == '0' || msg.zk == '')">
           <span style="font-size:14px" v-if="msg.price">€</span>
           {{msg.price}}
         </p>
-        <p class="have-zk" v-if="msg.zk != '0' && msg.zk != ''">
+        <p class="have-zk" v-if="login && (msg.zk != '0' && msg.zk != '')">
           <span style="font-size:14px" v-if="msg.price">€</span>
           <span>{{zkPrice(msg.price, msg.zk)}}</span>
           <span class="origin-price">{{msg.price}}</span>
@@ -79,12 +83,13 @@
               productImg: product.url
             })
           } else { // 未登录 vuex
-            this.ADD_CART({
-              productId: product.no,
-              salePrice: this.zkPrice(product.price, product.zk),
-              productName: product.name,
-              productImg: product.url
-            })
+            // this.ADD_CART({
+            //   productId: product.no,
+            //   salePrice: this.zkPrice(product.price, product.zk),
+            //   productName: product.name,
+            //   productImg: product.url
+            // })
+            this.$router.push({path: '/user'})
           }
           // 加入购物车动画
           var dom = event.target

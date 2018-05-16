@@ -54,6 +54,7 @@
                                  :id="item.productId"
                                  :checked="item.checked"
                                  :salePrice="item.salePrice"
+                                 :item="item"
                                  style="height: 140px;
                                    display: flex;
                                    align-items: center;

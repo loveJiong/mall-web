@@ -4,19 +4,19 @@
     <div class="select">
       <span class="down"
             @click.stop.prevent="down()"
-            :class="{'down-disabled':Num<=1}">-
+            :class="{'down-disabled':item.productNum<=1}">-
       </span>
       <span class="num">
         <input type="text"
                :class="{show:show}"
-               v-model="Num"
+               v-model="item.productNum"
                @blur="blur()"
                maxlength="5">
                   <ul ref="ul">
                     <li v-for="i in numList" :key="i">{{i}}</li>
                   </ul>
       </span>
-      <span class="up" :class="{'up-disabled':Num>=limit}"
+      <span class="up" :class="{'up-disabled':item.productNum>=limit}"
             @click.stop.prevent="up()">+</span>
     </div>
   </div>
@@ -24,6 +24,9 @@
 <script>
   export default {
     props: {
+      item: {
+        type: [Object]
+      },
       num: {
         type: [Number],
         default: 1
@@ -47,32 +50,29 @@
       return {
         show: true,
         flag: true,
-        Num: this.num,
         numList: []
       }
     },
     methods: {
       up () {
-        if (this.flag && this.Num < this.limit) {
+        if (this.flag && this.item.productNum < this.limit) {
           this.ani('up')
         }
         return false
       },
       down () {
-        if (this.flag && this.Num > 1) {
+        if (this.flag && this.item.productNum > 1) {
           this.ani('down')
         }
         return false
       },
       blur () {
-        console.log(1)
-        this.Num = this.Num > this.limit ? Number(this.limit) : Number(this.Num)
-        this.$emit('edit-num', this.Num, this.id, this.salePrice)
+        this.item.productNum = this.item.productNum > this.limit ? Number(this.limit) : Number(this.item.productNum)
+        this.$emit('edit-num', this.item.productNum, this.id, this.salePrice)
       },
       ani (opera) {
-        console.log(2)
         this.flag = false
-        let n = this.Num
+        let n = this.item.productNum
         this.numList = [n - 1, n, n + 1]
         let ul = this.$refs.ul
         let ulStyle = ul.style
@@ -80,10 +80,10 @@
         ulStyle.zIndex = '99'
         ulStyle.transition = 'all .2s ease-out'
         if (opera === 'up') {
-          this.Num++
+          this.item.productNum++
           ulStyle.transform = 'translateY(-54px)'
         } else {
-          this.Num--
+          this.item.productNum--
           ulStyle.transform = `translateY(-18px)`
         }
         ul.addEventListener('transitionend', () => {
@@ -96,7 +96,7 @@
           this.domInt(ulStyle)
           this.flag = true
         })
-        this.$emit('edit-num', this.Num, this.id, this.salePrice)
+        this.$emit('edit-num', this.item.productNum, this.id, this.salePrice)
       },
       domInt (domStyle) {
         domStyle.zIndex = '1'

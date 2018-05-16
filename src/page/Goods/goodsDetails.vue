@@ -15,11 +15,15 @@
       <div class="banner">
         <div class="sku-custom-title">
           <h4>{{product.name}}</h4>
-          <h6 v-if="product.zk == '0' || product.zk == ''" class="price">
-            <span >
+          <h6 v-if="!login" class="price">
+            <span title="登陆后查看">
+              <em>€</em><i>???</i></span>
+          </h6>
+          <h6 v-if="login && (product.zk == '0' || product.zk == '')" class="price">
+            <span>
               <em>€</em><i>{{product.price}}</i></span>
           </h6>
-          <h6 v-if="product.zk != '0' && product.zk != ''" class="have-zk price">
+          <h6 v-if="login && (product.zk != '0' && product.zk != '')" class="have-zk price">
             <span style="font-size:14px">€</span>
             <span><i>{{zkPrice(product.price, product.zk)}}</i></span>
             <span class="origin-price">{{product.price}}</span>
@@ -113,13 +117,14 @@
               productNum: this.productNum
             })
           } else { // 未登录 vuex
-            this.ADD_CART({
-              productId: product.no,
-              salePrice: this.zkPrice(product.price, product.zk),
-              productName: product.name,
-              productImg: product.picurl,
-              productNum: this.productNum
-            })
+            // this.ADD_CART({
+            //   productId: product.no,
+            //   salePrice: this.zkPrice(product.price, product.zk),
+            //   productName: product.name,
+            //   productImg: product.picurl,
+            //   productNum: this.productNum
+            // })
+            this.$router.push({path: '/user'})
           }
           // 加入购物车动画
           var dom = event.target
