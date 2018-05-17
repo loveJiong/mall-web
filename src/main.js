@@ -8,6 +8,7 @@ import VueCookie from 'vue-cookie'
 // import { userInfo } from './api'
 import { Button, Pagination, Checkbox, Icon, Autocomplete, Loading, Message, Notification, Steps, Step, Table, TableColumn, Input, Dialog, Select, Option, MessageBox } from 'element-ui'
 import { getStore } from '/utils/storage'
+import { getConfig } from '/api/getData'
 Vue.use(Button)
 Vue.use(Pagination)
 Vue.use(Checkbox)
@@ -36,9 +37,12 @@ Vue.use(VueLazyload, {
 })
 Vue.config.productionTip = false
 const whiteList = ['/home', '/goods', '/login', '/register', '/goodsDetails', '/thanks', '/search', '/refreshsearch', '/refreshgoods'] // 不需要登陆的页面
-router.beforeEach(function (to, from, next) {
-  let company = require('../static/json/company.json')
-  store.commit('SET_COMPANYID', company.id)
+router.beforeEach(async function (to, from, next) {
+  let configRes = await getConfig()
+  if (configRes.success) {
+    store.commit('SET_COMPANYID', configRes.data.id)
+    store.commit('SET_HOST', configRes.data.host)
+  }
   let userInfo = getStore('userInfo')
   if (userInfo || whiteList.indexOf(to.path) !== -1) {
     userInfo && store.commit('RECORD_USERINFO', JSON.parse(userInfo))

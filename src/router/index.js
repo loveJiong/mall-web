@@ -35,7 +35,7 @@ export default new Router({
       redirect: '/home',
       children: [
         {path: 'home', component: Home},
-        {path: 'goods', component: GoodS},
+        {path: 'goods', name: 'goods', component: GoodS},
         {path: 'goodsDetails', name: 'goodsDetails', component: goodsDetails},
         {path: '/refreshgoods', name: 'refreshgoods', component: RefreshGoods},
         {path: '/refreshsearch', name: 'refreshsearch', component: RefreshSearch},

@@ -9,7 +9,8 @@ import {
   EDIT_CART,
   SET_CATEGORYLIST,
   CLEAR_CART,
-  SET_COMPANYID
+  SET_COMPANYID,
+  SET_HOST
 } from './mutation-types'
 import { setStore, getStore } from '../utils/storage'
 export default {
@@ -148,5 +149,9 @@ export default {
   [SET_COMPANYID] (state, companyId) {
     state.companyId = companyId
     setStore('companyId', companyId)
+  },
+  [SET_HOST] (state, host) {
+    state.host = host
+    setStore('host', host)
   }
 }

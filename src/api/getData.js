@@ -1,27 +1,17 @@
 import axios from 'axios'
+import store from './../store'
 
-let baseUrl = ''
+let configUrl = `${window.location.origin}/static/config/config.json`
+
 const successCode = '00'
 const headers = {
   'Content-Type': 'application/json'
-}
-switch (process.env.NODE_ENV) {
-  case 'development':
-    // baseUrl = 'http://jesusl.cn:8080/dadi'
-    baseUrl = 'http://old.dadisoft.cn/dadi'
-    break
-  case 'production':
-    baseUrl = 'http://old.dadisoft.cn/dadi'
-    break
-  default:
-    baseUrl = 'http://jesusl.cn:8080/dadi'
-    break
 }
 
 async function http (url, method = 'GET', headers, data = {}) {
   method = method.toUpperCase()
   if (url.indexOf('http') === -1) {
-    url = baseUrl + url
+    url = store.state.host + url
   }
   let reqConfig = {
     method,
@@ -101,3 +91,5 @@ export const addCart = (customerId, companyId, data) => http(`/shoppingcar/add?c
 export const updateCart = (customerId, companyId, data) => http(`/shoppingcar/update?customerId=${customerId}&companyId=${companyId}`, 'POST', headers, data)
 
 export const deleteCart = (customerId, companyId, data) => http(`/shoppingcar/delete?customerId=${customerId}&companyId=${companyId}`, 'POST', headers, data)
+
+export const getConfig = () => http(configUrl, 'GET', headers)

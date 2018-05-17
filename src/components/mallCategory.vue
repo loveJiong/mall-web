@@ -2,14 +2,14 @@
   <div class="category-item">
     <div style="">
       <div class="category-img">
-        <a target="_blank" :href="'http://localhost:9999/#/goods?categoryId='+msg.guid+'&categoryName='+msg.name">
+        <a @click="toCategory(msg)">
           <img v-lazy="msg.url" :alt="msg.name">
         </a>
       </div>
       <h6 class="category-title" v-html="msg.name">{{msg.name}}</h6>
       <div class="category-price pr">
         <div class="ds pa">
-          <a target="_blank" :href="'http://localhost:9999/#/goods?categoryId='+msg.guid+'&categoryName='+msg.name">
+          <a @click="toCategory(msg)">
             <y-button text="查看详情" style="margin: 0 5px"></y-button>
           </a>
         </div>
@@ -27,6 +27,11 @@
     },
     data () {
       return {}
+    },
+    methods: {
+      toCategory (category) {
+        window.open(window.location.origin + '/#/goods?categoryId=' + category.guid + '&categoryName=' + category.name)
+      }
     },
     components: {
       YButton
