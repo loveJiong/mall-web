@@ -42,6 +42,9 @@ router.beforeEach(async function (to, from, next) {
   if (configRes.success) {
     store.commit('SET_COMPANYID', configRes.data.id)
     store.commit('SET_HOST', configRes.data.host)
+    store.commit('SET_SHOWZK', configRes.data.showZk)
+    store.commit('SET_ADDBYBAG', configRes.data.addByBag)
+    store.commit('SET_COMPUTEDZK', configRes.data.computedZk)
   }
   let userInfo = getStore('userInfo')
   if (userInfo || whiteList.indexOf(to.path) !== -1) {

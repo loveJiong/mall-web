@@ -18,7 +18,9 @@ const state = {
   showCart: false, // 是否显示购物车
   // 自己加的新内容
   categoryList: [],
-  companyId: '1'
+  companyId: '1',
+  addByBag: true,
+  showZk: true
 }
 
 export default new Vuex.Store({

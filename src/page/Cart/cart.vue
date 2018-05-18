@@ -190,20 +190,24 @@
       // },
       // 修改购物车
       _cartEdit (userId, productId, productNum, salePrice) {
-        let data = {
-          goods: [{
-            no: productId,
-            count: productNum,
-            price: salePrice,
-            totalprice: salePrice * productNum
-          }]
+        if (productNum > 0) {
+          let data = {
+            goods: [{
+              no: productId,
+              count: productNum,
+              price: salePrice,
+              totalprice: salePrice * productNum
+            }]
+          }
+          updateCart(userId, this.companyId, data)
+          this.EDIT_CART({
+            productId,
+            productNum
+          })
+        } else {
+          this.cartdel(productId)
         }
-        console.log(data)
-        updateCart(userId, this.companyId, data)
-        this.EDIT_CART({
-          productId,
-          productNum
-        })
+
         // cartEdit(
         //   {
         //     userId,

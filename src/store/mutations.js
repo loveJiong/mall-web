@@ -10,7 +10,10 @@ import {
   SET_CATEGORYLIST,
   CLEAR_CART,
   SET_COMPANYID,
-  SET_HOST
+  SET_HOST,
+  SET_ADDBYBAG,
+  SET_SHOWZK,
+  SET_COMPUTEDZK
 } from './mutation-types'
 import { setStore, getStore } from '../utils/storage'
 export default {
@@ -22,14 +25,15 @@ export default {
     }
   },
   // 加入购物车
-  [ADD_CART] (state, {productId, salePrice, productName, productImg, productNum = 1}) {
+  [ADD_CART] (state, {productId, salePrice, productName, productImg, productNum = 1, bagcount}) {
     let cart = state.cartList // 购物车
     let falg = true
     let goods = {
       productId,
       salePrice,
       productName,
-      productImg
+      productImg,
+      bagcount
     }
     if (cart.length) {        // 有内容
       cart.forEach(item => {
@@ -37,6 +41,7 @@ export default {
           if (item.productNum >= 0) {
             falg = false
             item.productNum += productNum
+            item.salePrice = salePrice
           }
         }
       })
@@ -153,5 +158,17 @@ export default {
   [SET_HOST] (state, host) {
     state.host = host
     setStore('host', host)
+  },
+  [SET_SHOWZK] (state, showZk) {
+    state.showZk = showZk
+    setStore('showZk', showZk)
+  },
+  [SET_ADDBYBAG] (state, addByBag) {
+    state.addByBag = addByBag
+    setStore('addByBag', addByBag)
+  },
+  [SET_COMPUTEDZK] (state, computedZk) {
+    state.computedZk = computedZk
+    setStore('computedZk', computedZk)
   }
 }

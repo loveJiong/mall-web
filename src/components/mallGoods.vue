@@ -22,11 +22,11 @@
           <span style="font-size:14px" v-if="msg.price">€</span>
           ???
         </p>
-        <p v-if="login && (msg.zk == '0' || msg.zk == '')">
+        <p v-if="(login && (msg.zk == '0' || msg.zk == '')) || !showZk">
           <span style="font-size:14px" v-if="msg.price">€</span>
           {{msg.price}}
         </p>
-        <p class="have-zk" v-if="login && (msg.zk != '0' && msg.zk != '')">
+        <p class="have-zk" v-if="showZk && login && (msg.zk != '0' && msg.zk != '')">
           <span style="font-size:14px" v-if="msg.price">€</span>
           <span>{{zkPrice(msg.price, msg.zk)}}</span>
           <span class="origin-price">{{msg.price}}</span>
@@ -58,7 +58,7 @@
       },
       zkPrice (price, zk) {
         let num = price
-        if (zk !== '0' && zk !== '') {
+        if (zk !== '0' && zk !== '' && this.computedZk) {
           num = price * (100 - zk) / 100
           num = num.toFixed(2)
         }
@@ -70,7 +70,7 @@
             let data = {
               goods: [{
                 no: product.no,
-                count: 1,
+                count: this.addByBag ? product.bagCount : 1,
                 price: this.zkPrice(product.price, product.zk),
                 totalprice: this.zkPrice(product.price, product.zk)
               }]
@@ -80,7 +80,9 @@
               productId: product.no,
               salePrice: this.zkPrice(product.price, product.zk),
               productName: product.name,
-              productImg: product.url
+              productImg: product.url,
+              productNum: this.addByBag ? product.bagCount : 1,
+              bagcount: product.bagCount
             })
           } else { // 未登录 vuex
             // this.ADD_CART({
@@ -105,7 +107,7 @@
       }
     },
     computed: {
-      ...mapState(['login', 'showMoveImg', 'showCart', 'companyId'])
+      ...mapState(['login', 'showMoveImg', 'showCart', 'companyId', 'addByBag', 'showZk', 'computedZk'])
     },
     components: {
       YButton

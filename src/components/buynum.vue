@@ -4,7 +4,7 @@
     <div class="select">
       <span class="down"
             @click.stop.prevent="down()"
-            :class="{'down-disabled':item.productNum<=1}">-
+            :class="{'down-disabled':item.productNum<=0}">-
       </span>
       <span class="num">
         <input type="text"
@@ -66,7 +66,7 @@
         return false
       },
       down () {
-        if (this.flag && this.item.productNum > 1) {
+        if (this.flag && this.item.productNum > 0) {
           this.ani('down')
         }
         return false
@@ -85,10 +85,18 @@
         ulStyle.zIndex = '99'
         ulStyle.transition = 'all .2s ease-out'
         if (opera === 'up') {
-          this.item.productNum++
+          if (this.$store.state.addByBag) {
+            this.item.productNum += this.item.bagcount
+          } else {
+            this.item.productNum++
+          }
           ulStyle.transform = 'translateY(-54px)'
         } else {
-          this.item.productNum--
+          if (this.$store.state.addByBag) {
+            this.item.productNum -= this.item.bagcount
+          } else {
+            this.item.productNum--
+          }
           ulStyle.transform = `translateY(-18px)`
         }
         ul.addEventListener('transitionend', () => {

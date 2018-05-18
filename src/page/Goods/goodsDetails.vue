@@ -19,11 +19,11 @@
             <span title="登陆后查看">
               <em>€</em><i>???</i></span>
           </h6>
-          <h6 v-if="login && (product.zk == '0' || product.zk == '')" class="price">
+          <h6 v-if="(login && (product.zk == '0' || product.zk == '')) || !showZk" class="price">
             <span>
               <em>€</em><i>{{product.price}}</i></span>
           </h6>
-          <h6 v-if="login && (product.zk != '0' && product.zk != '')" class="have-zk price">
+          <h6 v-if="showZk && login && (product.zk != '0' && product.zk != '')" class="have-zk price">
             <span style="font-size:14px">€</span>
             <span><i>{{zkPrice(product.price, product.zk)}}</i></span>
             <span class="origin-price">{{product.price}}</span>
@@ -32,7 +32,7 @@
         </div>
         <div class="num">
           <span class="params-name">数量</span>
-          <buy-num @edit-num="editNum" :limit="99"></buy-num>
+          <buy-num @edit-num="editNum" :limit="99" :item="product"></buy-num>
         </div>
         <div class="buy">
           <y-button text="加入购物车"
@@ -79,7 +79,7 @@
       }
     },
     computed: {
-      ...mapState(['login', 'showMoveImg', 'showCart', 'companyId'])
+      ...mapState(['login', 'showMoveImg', 'showCart', 'companyId', 'addByBag', 'showZk', 'computedZk'])
     },
     methods: {
       ...mapMutations(['ADD_CART', 'ADD_ANIMATION', 'SHOW_CART']),
@@ -87,11 +87,13 @@
         let goodsDetailRes = await getGoodsDetail(this.companyId, this.$route.query.productId)
         if (goodsDetailRes.success) {
           this.product = goodsDetailRes.data
+          this.product.productNum = this.addByBag ? this.product.bagcount : 1
+          this.productNum = this.addByBag ? this.product.bagcount : 1
         }
       },
       zkPrice (price, zk) {
         let num = price
-        if (zk !== '0' && zk !== '') {
+        if (zk !== '0' && zk !== '' && this.computedZk) {
           num = price * (100 - zk) / 100
           num = num.toFixed(2)
         }
@@ -114,7 +116,8 @@
               salePrice: this.zkPrice(product.price, product.zk),
               productName: product.name,
               productImg: product.picurl,
-              productNum: this.productNum
+              productNum: this.productNum,
+              bagcount: product.bagcount
             })
           } else { // 未登录 vuex
             // this.ADD_CART({

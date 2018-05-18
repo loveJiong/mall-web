@@ -322,7 +322,8 @@
               salePrice: item.price,
               productName: item.name,
               productImg: item.url,
-              productNum: item.count
+              productNum: item.count,
+              bagcount: item.bagcount
             }
             return result
           })

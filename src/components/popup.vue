@@ -87,6 +87,8 @@ export default {
     }
     .s-content{
         padding: 30px 15px;
+        max-height: 450px;
+        overflow-y: scroll;
     }
     .close{
         position: absolute;
