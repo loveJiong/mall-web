@@ -16,7 +16,7 @@
         <div class="sku-custom-title">
           <h4>{{product.name}}</h4>
           <h6 v-if="!login" class="price">
-            <span title="登陆后查看">
+            <span :title="language.goodsDetails.lookPrice">
               <em>€</em><i>???</i></span>
           </h6>
           <h6 v-if="(login && (product.zk == '0' || product.zk == '')) || !showZk" class="price">
@@ -31,11 +31,11 @@
           </h6>
         </div>
         <div class="num">
-          <span class="params-name">数量</span>
+          <span class="params-name">{{language.goodsDetails.count}}</span>
           <buy-num @edit-num="editNum" :limit="99" :item="product"></buy-num>
         </div>
         <div class="buy">
-          <y-button text="加入购物车"
+          <y-button :text="language.goodsDetails.addToCart"
                     @btnClick="addCart(product)"
                     classStyle="main-btn"
                     style="width: 145px;height: 50px;line-height: 48px"></y-button>
@@ -43,7 +43,7 @@
       </div>
     </div>
     <!--产品信息-->
-    <div class="item-info">
+    <!-- <div class="item-info">
       <y-shelf title="产品信息">
         <div slot="content">
           <div class="img-item" v-if="productMsg">
@@ -56,7 +56,7 @@
           </div>
         </div>
       </y-shelf>
-    </div>
+    </div> -->
   </div>
 </template>
 <script>
@@ -79,7 +79,7 @@
       }
     },
     computed: {
-      ...mapState(['login', 'showMoveImg', 'showCart', 'companyId', 'addByBag', 'showZk', 'computedZk'])
+      ...mapState(['login', 'showMoveImg', 'showCart', 'companyId', 'addByBag', 'showZk', 'computedZk', 'language'])
     },
     methods: {
       ...mapMutations(['ADD_CART', 'ADD_ANIMATION', 'SHOW_CART']),

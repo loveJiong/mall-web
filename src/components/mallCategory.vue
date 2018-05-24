@@ -10,7 +10,7 @@
       <div class="category-price pr">
         <div class="ds pa">
           <a @click="toCategory(msg)">
-            <y-button text="查看详情" style="margin: 0 5px"></y-button>
+            <y-button :text="language.categoryList.toDetail" style="margin: 0 5px"></y-button>
           </a>
         </div>
       </div>
@@ -19,6 +19,7 @@
 </template>
 <script>
   import YButton from '/components/YButton'
+  import { mapState } from 'vuex'
   export default {
     props: {
       msg: {
@@ -27,6 +28,9 @@
     },
     data () {
       return {}
+    },
+    computed: {
+      ...mapState(['language'])
     },
     methods: {
       toCategory (category) {

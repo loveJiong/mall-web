@@ -1,44 +1,37 @@
 <template>
   <div class="login v2">
     <div class="wrapper">
-      <div class="dialog dialog-shadow" style="display: block; margin-top: -362px;">
+      <div class="dialog dialog-shadow" style="display: block; margin-top: -362px;" v-loading="loading">
         <div class="title">
-          <h4>使用 XMall 账号 登录官网</h4>
+          <h4>{{language.login.text}}</h4>
         </div>
         <div v-if="loginPage" class="content">
           <ul class="common-form">
             <li class="username border-1p">
               <div class="input">
-                <input type="text" v-model="ruleForm.userName" placeholder="账号">
+                <input type="text" v-model="ruleForm.userName" :placeholder="language.login.account">
               </div>
             </li>
             <li>
               <div class="input">
-                <input type="password" v-model="ruleForm.userPwd" @keyup.enter="login" placeholder="密码">
+                <input type="password" v-model="ruleForm.userPwd" @keyup.enter="login" :placeholder="language.login.pwd">
               </div>
             </li>
-            <!-- <li>
-              <div id="captcha">
-                <p id="wait">正在加载验证码...</p>
-              </div>
-            </li> -->
             <li style="text-align: right" class="pr">
-              <el-checkbox class="auto-login" v-model="autoLogin">记住密码</el-checkbox>
+              <el-checkbox class="auto-login" v-model="autoLogin">{{language.login.rememberPwd}}</el-checkbox>
               <span class="pa" style="top: 0;left: 0;color: #d44d44">{{ruleForm.errMsg}}</span>
-              <!-- <a href="javascript:;" class="register" @click="toRegister">注册 XMall 账号</a> -->
-              <!-- <a style="padding: 1px 0 0 10px" @click="open('找回密码','请联系作者邮箱找回密码或使用测试账号登录：test | test')">忘记密码 ?</a> -->
             </li>
           </ul>
           <!--登陆-->
           <div style="margin-top: 25px">
-            <y-button :text="logintxt"
-                      :classStyle="ruleForm.userPwd&& ruleForm.userName&& logintxt === '登录'?'main-btn':'disabled-btn'"
+            <y-button :text="language.login.loginButton"
+                      :classStyle="ruleForm.userPwd && ruleForm.userName?'main-btn':'disabled-btn'"
                       @btnClick="login"
                       style="margin: 0;width: 100%;height: 48px;font-size: 18px;line-height: 48px"></y-button>
           </div>
           <!--返回-->
           <div>
-            <y-button text="返回" @btnClick="login_back"
+            <y-button :text="language.login.returnButton" @btnClick="login_back"
               style="marginTop: 10px;marginBottom: 15px;width: 100%;height: 48px;font-size: 18px;line-height: 48px">
             </y-button>
           </div>
@@ -50,11 +43,10 @@
 <script>
 import YFooter from '/common/footer'
 import YButton from '/components/YButton'
-import { mapMutations } from 'vuex'
+import { mapMutations, mapState } from 'vuex'
 import { accountLogin } from '/api/getData.js'
 import { addCart } from '/api/goods.js'
 import { setStore, getStore, removeStore } from '/utils/storage.js'
-// require('../../../static/geetest/gt.js')
 export default {
   data () {
     return {
@@ -72,10 +64,13 @@ export default {
         errMsg: ''
       },
       autoLogin: false,
-      logintxt: '登录'
+      loading: false
     }
   },
   computed: {
+    ...mapState([
+      'language'
+    ]),
     count () {
       return this.$store.state.login
     }
@@ -143,23 +138,20 @@ export default {
       this.cart = cartArr
     },
     async login () {
-      this.logintxt = '登录中...'
+      this.loading = true
       this.rememberPass()
       if (!this.ruleForm.userName || !this.ruleForm.userPwd) {
         // this.ruleForm.errMsg = '账号或者密码不能为空!'
         this.message('账号或者密码不能为空!')
         return false
       }
-      console.log(addCart)
       let loginInfo = {
         customerName: this.ruleForm.userName,
         password: this.ruleForm.userPwd
       }
       let loginRes = await accountLogin(loginInfo)
       if (loginRes.success) {
-        console.log(loginRes)
         this.RECORD_USERINFO(loginRes.data)
-        // this.$store.commit('setUserInfo', loginRes.data)
         setStore('userId', loginRes.data.id)
         // 登录后添加当前缓存中的购物车
         if (this.cart.length) {
@@ -179,43 +171,15 @@ export default {
           })
         }
       } else {
-        this.logintxt = '登录'
+        this.loading = false
         this.message(loginRes.msg)
         return false
       }
-      // userLogin(params).then(res => {
-      //   if (res.result.state === 1) {
-      //     setStore('token', res.result.token)
-      //     setStore('userId', res.result.id)
-      //     // 登录后添加当前缓存中的购物车
-      //     if (this.cart.length) {
-      //       for (var i = 0; i < this.cart.length; i++) {
-      //         addCart(this.cart[i]).then(res => {
-      //           if (res.success === true) {
-      //           }
-      //         })
-      //       }
-      //       removeStore('buyCart')
-      //       this.$router.push({
-      //         path: '/'
-      //       })
-      //     } else {
-      //       this.$router.push({
-      //         path: '/'
-      //       })
-      //     }
-      //   } else {
-      //     this.logintxt = '登录'
-      //     this.message(res.result.message)
-      //     return false
-      //   }
-      // })
     }
   },
   mounted () {
     this.getRemembered()
     this.login_addCart()
-    // this.open('登录提示', '测试体验账号密码：test | test')
   },
   components: {
     YFooter,

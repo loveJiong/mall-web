@@ -8,7 +8,7 @@ import VueCookie from 'vue-cookie'
 // import { userInfo } from './api'
 import { Button, Pagination, Checkbox, Icon, Autocomplete, Loading, Message, Notification, Steps, Step, Table, TableColumn, Input, Dialog, Select, Option, MessageBox } from 'element-ui'
 import { getStore } from '/utils/storage'
-import { getConfig } from '/api/getData'
+import { getConfig, getLanguage } from '/api/getData'
 Vue.use(Button)
 Vue.use(Pagination)
 Vue.use(Checkbox)
@@ -39,12 +39,16 @@ Vue.config.productionTip = false
 const whiteList = ['/home', '/goods', '/login', '/register', '/goodsDetails', '/thanks', '/search', '/refreshsearch', '/refreshgoods'] // 不需要登陆的页面
 router.beforeEach(async function (to, from, next) {
   let configRes = await getConfig()
+  let languageRes = await getLanguage()
   if (configRes.success) {
     store.commit('SET_COMPANYID', configRes.data.id)
     store.commit('SET_HOST', configRes.data.host)
     store.commit('SET_SHOWZK', configRes.data.showZk)
     store.commit('SET_ADDBYBAG', configRes.data.addByBag)
     store.commit('SET_COMPUTEDZK', configRes.data.computedZk)
+  }
+  if (languageRes.success) {
+    store.commit('SET_LANGUAGE', languageRes.data)
   }
   let userInfo = getStore('userInfo')
   if (userInfo || whiteList.indexOf(to.path) !== -1) {

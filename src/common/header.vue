@@ -11,7 +11,7 @@
           <div class="right-box">
             <div class="nav-list">
               <el-autocomplete
-                placeholder="请输入商品信息"
+                :placeholder="language.header.search"
                 icon="search"
                 v-model="input"
                 minlength=1
@@ -40,13 +40,13 @@
                         <p class="name">{{userInfo.name}}</p>
                       </li>
                       <li>
-                        <router-link to="/user/orderList">我的订单</router-link>
+                        <router-link to="/user/orderList">{{language.header.myOrder}}</router-link>
                       </li>
                       <!-- <li>
                         <router-link to="/user/information">账号资料</router-link>
                       </li> -->
                       <li>
-                        <router-link to="/user/addressList">收货地址</router-link>
+                        <router-link to="/user/addressList">{{language.header.address}}</router-link>
                       </li>
                       <!-- <li>
                         <router-link to="/user/support">售后服务</router-link>
@@ -55,7 +55,7 @@
                         <router-link to="/user/coupon">我的优惠</router-link>
                       </li> -->
                       <li>
-                        <a href="javascript:;" @click="_loginOut">退出</a>
+                        <a href="javascript:;" @click="_loginOut">{{language.header.logout}}</a>
                       </li>
                     </ul>
                   </div>
@@ -98,18 +98,18 @@
                         </ul>
                       </div>
                       <!--总件数-->
-                      <div class="nav-cart-total"><p>共 <strong>{{totalNum}}</strong> 件商品</p> <h5>合计：<span
+                      <div class="nav-cart-total"><p><strong>{{totalNum}}</strong> {{language.header.goodCount}}</p> <h5>{{language.header.total}}<span
                         class="price-icon">€</span><span
                         class="price-num">{{totalPrice.toFixed(2)}}</span></h5>
                         <h6>
                           <y-button classStyle="main-btn"
                                     style="height: 40px;width: 100%;margin: 0;color: #fff;font-size: 14px;line-height: 38px"
-                                    text="去购物车" @btnClick="toCart"></y-button>
+                                    v-bind:text="language.header.toCart" @btnClick="toCart"></y-button>
                         </h6>
                       </div>
                     </div>
                     <div v-show="!totalNum" style="height: 313px;text-align: center" class="cart-con">
-                      <p>您的购物车竟然是空的!</p>
+                      <p>{{language.header.emptyCart}}</p>
                     </div>
                   </div>
                 </div>
@@ -125,10 +125,10 @@
             <div class="w">
               <ul class="nav-list2">
                 <li>
-                  <router-link to="/"><a @click="changePage(1)" :class="{active:choosePage===1}">首页</a></router-link>
+                  <router-link to="/"><a @click="changePage(1)" :class="{active:choosePage===1}">{{language.header.home}}</a></router-link>
                 </li>
                 <li class="goodList" @mouseover="showCategoryList" @mouseout="hideCategoryList">
-                  <a :class="{active:choosePage===2}">商品列表</a>
+                  <a :class="{active:choosePage===2}">{{language.header.goodList}}</a>
                   <ul class="categoryList" v-show="categoryListFlag">
                     <li v-for="(category, i) in categoryList" :key="i">
                       <span class="category-name">{{category.name}}&nbsp;>&nbsp;</span>
@@ -190,7 +190,7 @@
     },
     computed: {
       ...mapState([
-        'cartList', 'login', 'receiveInCart', 'showCart', 'userInfo', 'categoryList', 'companyId'
+        'cartList', 'login', 'receiveInCart', 'showCart', 'userInfo', 'categoryList', 'companyId', 'language'
       ]),
       // 计算价格
       totalPrice () {

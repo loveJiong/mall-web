@@ -20,7 +20,8 @@ const state = {
   categoryList: [],
   companyId: '1',
   addByBag: true,
-  showZk: true
+  showZk: true,
+  language: {}
 }
 
 export default new Vuex.Store({

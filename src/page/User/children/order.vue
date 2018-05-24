@@ -2,28 +2,28 @@
   <div>
     <y-shelf title="我的订单">
       <div slot="content">
-        <div v-loading="loading" element-loading-text="加载中..." v-if="orderList.length" style="min-height: 10vw;max-height: 304px;overflow: auto;">
+        <div v-loading="loading" v-if="orderList.length" style="min-height: 10vw;max-height: 304px;overflow: auto;">
           <div v-for="(item,i) in orderList" :key="i">
             <div class="gray-sub-title cart-title">
               <div class="first">
                 <div>
                   <span class="date" v-text="item.createTime"></span>
-                  <span class="order-id"> 订单号： <a @click="orderDetail(item)">{{item.bh}}</a> </span>
+                  <span class="order-id"> {{language.order.orderBh}} <a @click="orderDetail(item)">{{item.bh}}</a> </span>
                 </div>
                 <div class="f-bc">
-                  <span class="num">数量：{{item.count}}</span>
-                  <span class="sub-total">金额：€{{(+item.hj).toFixed(2)}}</span>
+                  <span class="num">{{language.order.count}}{{item.count}}</span>
+                  <span class="sub-total">{{language.order.price}}€{{(+item.hj).toFixed(2)}}</span>
                 </div>
               </div>
               <div class="last">
-                <span class="order-detail"> <a @click="orderDetail(item)">查看详情 ><em class="icon-font"></em></a> </span>
+                <span class="order-detail"> <a @click="orderDetail(item)">{{language.order.toDetail}} ><em class="icon-font"></em></a> </span>
               </div>
             </div>
           </div>
         </div>
-        <div v-loading="loading" element-loading-text="加载中..." class="no-info" v-else>
+        <div v-loading="loading" class="no-info" v-else>
           <div style="padding: 100px 0;text-align: center">
-            你还未创建过订单
+            {{language.order.emptyOrder}}
           </div>
         </div>
       </div>
@@ -34,6 +34,7 @@
   import { getOrder } from '/api/getData'
   import YShelf from '/components/shelf'
   import { getStore } from '/utils/storage'
+  import { mapState } from 'vuex'
   export default {
     data () {
       return {
@@ -41,6 +42,11 @@
         userId: '',
         loading: true
       }
+    },
+    computed: {
+      ...mapState(
+        ['language']
+      )
     },
     methods: {
       message (m) {

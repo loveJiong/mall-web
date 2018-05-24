@@ -1,0 +1,100 @@
+{
+    "status": "00",
+    "data": {
+        "Chinese": {
+            "header": {
+                "search": "请输入商品信息",
+                "myOrder": "我的订单",
+                "address": "收货地址",
+                "logout": "退出",
+                "emptyCart": "您的购物车竟然是空的！",
+                "toCart": "去购物车",
+                "total": "合计：",
+                "goodCount": "件商品",
+                "goodList": "商品列表",
+                "home": "首页"
+            },
+            "categoryList": {
+                "toDetail": "查看详情"
+            },
+            "goodList": {
+                "noGood": "抱歉！暂时还没有商品",
+                "err": "抱歉！出错了...",
+                "toDetail": "查看详情",
+                "addToCart": "加入购物车"
+            },
+            "login": {
+                "text": "使用账号 登录官网",
+                "account": "账号",
+                "pwd": "密码",
+                "rememberPwd": "记住密码",
+                "loginButton": "登录",
+                "returnButton": "返回"
+            },
+            "goodsDetails": {
+                "count": "数量",
+                "addToCart": "加入购物车",
+                "lookPrice": "登录后查看"
+            },
+            "user": {
+                "myorder": "我的订单",
+                "address": "收货地址"
+            },
+            "cart": {
+                "title": "购物清单",
+                "goodInfo": "商品信息",
+                "operation": "操作",
+                "price": "单价",
+                "count": "数量",
+                "subtotal": "小计",
+                "emptyCart": "您的购物车竟然是空的！",
+                "totalPrice": "总额：",
+                "good": "件商品",
+                "totalCount": "共计",
+                "commit": "上传订单"
+            },
+            "order": {
+                "title": "我的订单",
+                "orderBh": "订单号：",
+                "count": "数量：",
+                "price": "金额：",
+                "toDetail": "查看详情",
+                "emptyOrder": "你还未创建过订单"
+            },
+            "orderDetail": {
+                "title": "订单号",
+                "goodName": "商品名称",
+                "price": "单价",
+                "count": "数量",
+                "subtotal": "小计",
+                "totalPrice": "商品总计：",
+                "err": "获取该订单信息失败"
+            },
+            "address": {
+                "title": "收货地址",
+                "name": "姓名",
+                "detail": "详细地址",
+                "phone": "电话",
+                "emptyAddress": "你还未添加收货地址",
+                "companyName": "公司名称",
+                "linkMan": "联系人",
+                "companySh": "税号",
+                "companyAddress": "地址",
+                "city": "城市",
+                "province": "省份",
+                "country": "国家",
+                "postalCode": "邮政编码",
+                "linkTelephone": "联系电话",
+                "linkEmail": "电子邮箱",
+                "save": "保存",
+                "updateSuccess": "恭喜您，更新地址成功！",
+                "updateErr": "更新地址失败，请稍后重试。",
+                "updateTitle": "管理收货地址",
+                "addSuccess": "恭喜您，新增地址成功！",
+                "addErr": "新增地址失败，请稍后重试。",
+                "addTitle": "新增收货地址",
+                "addButton": "添加地址"
+            }
+        }
+    }
+}

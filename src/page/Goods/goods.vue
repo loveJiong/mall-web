@@ -6,7 +6,7 @@
       </div>
     </div>
 
-    <div v-loading="loading" element-loading-text="加载中..." style="min-height: 35vw;">
+    <div v-loading="loading" style="min-height: 35vw;">
       <div class="img-item" v-if="!noResult">
         <!--商品-->
         <div class="goods-box w">
@@ -17,13 +17,13 @@
       <div class="no-info" v-if="noResult">
         <div class="no-data">
           <img src="/static/images/no-search.png">
-          <br> 抱歉！暂时还没有商品
+          <br> {{language.goodList.noGood}}
         </div>
       </div>
       <div class="no-info" v-if="error">
         <div class="no-data">
           <img src="/static/images/error.png">
-          <br> 抱歉！出错了...
+          <br> {{language.goodList.err}}
         </div>
       </div>
     </div>
@@ -49,7 +49,7 @@
     },
     computed: {
       ...mapState(
-        ['companyId']
+        ['companyId', 'language']
       )
     },
     methods: {

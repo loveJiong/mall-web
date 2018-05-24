@@ -1,11 +1,11 @@
 <template>
   <div>
-    <y-shelf title="收货地址">
-      <span slot="right" v-if="this.isAdd"><y-button text="添加收货地址" style="margin: 0" @btnClick="update()"></y-button></span>
+    <y-shelf :title="language.address.title">
+      <span slot="right" v-if="this.isAdd"><y-button :text="language.address.addTitle" style="margin: 0" @btnClick="update()"></y-button></span>
       <div slot="content">
         <!--标题-->
         <div class="table-title">
-          <span class="name">姓名</span> <span class="address">详细地址</span> <span class="tel">电话</span>
+          <span class="name">{{language.address.name}}</span> <span class="address">{{language.address.detail}}</span> <span class="tel">{{language.address.phone}}</span>
         </div>
         <div v-if="addList.length">
           <div class="address-item" v-for="(item,i) in addList" :key="i">
@@ -26,9 +26,9 @@
         </div>
         <div v-else>
           <div style="padding: 80px 0;text-align: center">
-            <div style="font-size: 20px">你还未添加收货地址</div>
+            <div style="font-size: 20px">{{language.address.emptyAddress}}</div>
             <div style="margin: 20px ">
-              <y-button text="添加地址" @btnClick="update()"></y-button>
+              <y-button :text="language.address.addButton" @btnClick="update()"></y-button>
             </div>
           </div>
         </div>
@@ -37,46 +37,46 @@
     <y-popup :open="popupOpen" @close='popupOpen=false' :title="popupTitle">
       <div slot="content" class="md">
         <div>
-          <span>公司名称</span>
-          <input type="text" placeholder="公司名称" v-model="msg.companyName">
+          <span>{{language.address.companyName}}</span>
+          <input type="text" :placeholder="language.address.companyName" v-model="msg.companyName">
         </div>
         <div>
-          <span>联系人</span>
-          <input type="text" placeholder="联系人" v-model="msg.linkMan">
+          <span>{{language.address.linkMan}}</span>
+          <input type="text" :placeholder="language.address.linkMan" v-model="msg.linkMan">
         </div>
         <div>
-          <span>税号</span>
-          <input type="text" placeholder="税号" v-model="msg.companySh">
+          <span>{{language.address.companySh}}</span>
+          <input type="text" :placeholder="language.address.companySh" v-model="msg.companySh">
         </div>
         <div>
-          <span>地址</span>
-          <input type="text" placeholder="地址" v-model="msg.companyAddress">
+          <span>{{language.address.companyAddress}}</span>
+          <input type="text" :placeholder="language.address.companyAddress" v-model="msg.companyAddress">
         </div>
         <div>
-          <span>城市</span>
-          <input type="text" placeholder="城市" v-model="msg.city">
+          <span>{{language.address.city}}</span>
+          <input type="text" :placeholder="language.address.city" v-model="msg.city">
         </div>
         <div>
-          <span>省份</span>
-          <input type="text" placeholder="省份" v-model="msg.province">
+          <span>{{language.address.province}}</span>
+          <input type="text" :placeholder="language.address.province" v-model="msg.province">
         </div>
         <div>
-          <span>国家</span>
-          <input type="text" placeholder="国家" v-model="msg.country">
+          <span>{{language.address.country}}</span>
+          <input type="text" :placeholder="language.address.country" v-model="msg.country">
         </div>
         <div>
-          <span>邮政编码</span>
-          <input type="text" placeholder="邮政编码" v-model="msg.postalCode">
+          <span>{{language.address.postalCode}}</span>
+          <input type="text" :placeholder="language.address.postalCode" v-model="msg.postalCode">
         </div>
         <div>
-          <span>联系电话</span>
-          <input type="text" placeholder="联系电话" v-model="msg.linkTelephone">
+          <span>{{language.address.linkTelephone}}</span>
+          <input type="text" :placeholder="language.address.linkTelephone" v-model="msg.linkTelephone">
         </div>
         <div>
-          <span>电子邮箱</span>
-          <input type="text" placeholder="电子邮箱" v-model="msg.linkEmail">
+          <span>{{language.address.linkEmail}}</span>
+          <input type="text" :placeholder="language.address.linkEmail" v-model="msg.linkEmail">
         </div>
-        <y-button text='保存'
+        <y-button :text='language.address.save'
                   class="btn"
                   :classStyle="btnHighlight?'main-btn':'disabled-btn'"
                   @btnClick="save(msg)">
@@ -91,12 +91,13 @@
   import YPopup from '/components/popup'
   import YShelf from '/components/shelf'
   import { getStore } from '/utils/storage'
+  import { mapState } from 'vuex'
   export default {
     data () {
       return {
         addList: [],
         popupOpen: false,
-        popupTitle: '管理收货地址',
+        popupTitle: '',
         msg: {
           addressId: '',
           userName: '',
@@ -109,6 +110,9 @@
       }
     },
     computed: {
+      ...mapState(
+        ['language']
+      ),
       btnHighlight () {
         let msg = this.msg
         return msg.companyName && msg.linkMan && msg.companySh && msg.companyAddress && msg.city && msg.province && msg.country && msg.postalCode && msg.linkTelephone && msg.linkEmail
@@ -131,20 +135,20 @@
       async _addressUpdate (data) {
         let updateAddressRes = await updateAddress(data)
         if (updateAddressRes.success) {
-          this.$message.success('恭喜您，更新地址成功！')
+          this.$message.success(this.language.address.updateSuccess)
           this._addressList()
         } else {
-          this.$message.error('更新地址失败，请稍后重试。')
+          this.$message.error(this.language.address.updateErr)
         }
       },
       async _addressAdd (data) {
         data.customerId = this.userId
         let newAddressRes = await newAddress(data)
         if (newAddressRes.success) {
-          this.$message.success('恭喜您，新增地址成功！')
+          this.$message.success(this.language.address.addSuccess)
           this._addressList()
         } else {
-          this.$message.error('新增地址失败，请稍后重试。')
+          this.$message.error(this.language.address.addErr)
         }
       },
       changeDef (item) {
@@ -178,7 +182,7 @@
       update (item) {
         this.popupOpen = true
         if (item) {
-          this.popupTitle = '管理收货地址'
+          this.popupTitle = this.language.address.updateTitle
           this.msg = {
             companyName: item.companyName,
             linkMan: item.linkMan,
@@ -194,7 +198,7 @@
             customerId: item.customerId
           }
         } else {
-          this.popupTitle = '新增收货地址'
+          this.popupTitle = this.language.address.addTitle
           this.msg = {}
         }
       }

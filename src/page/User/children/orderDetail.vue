@@ -6,12 +6,12 @@
           <div class="gray-sub-title cart-title">
             <div class="first">
               <div>
-                <span class="order-id">商品名称</span>
+                <span class="order-id">{{language.orderDetail.goodName}}</span>
               </div>
               <div class="f-bc">
-                <span class="price">单价</span>
-                <span class="num">数量</span>
-                <span class="operation">小计</span>
+                <span class="price">{{language.orderDetail.price}}</span>
+                <span class="num">{{language.orderDetail.count}}</span>
+                <span class="operation">{{language.orderDetail.subtotal}}</span>
               </div>
             </div>
           </div>
@@ -32,14 +32,14 @@
           </div>
           <!--合计-->
           <div class="order-discount-line">
-            <p style="font-size: 14px;font-weight: bolder;"> <span style="padding-right:47px">商品总计：</span>
+            <p style="font-size: 14px;font-weight: bolder;"> <span style="padding-right:47px">{{language.orderDetail.totalPrice}}</span>
               <span style="font-size: 16px;font-weight: 500;line-height: 32px;">€ {{(+orderTotal).toFixed(2)}}</span>
             </p>
           </div>
         </div>
-        <div v-loading="loading" element-loading-text="加载中..." v-else>
+        <div v-loading="loading" v-else>
           <div style="padding: 100px 0;text-align: center">
-            获取该订单信息失败
+            {{language.orderDetail.err}}
           </div>
         </div>
       </div>
@@ -51,6 +51,7 @@
   import { getOrderDetail } from '/api/getData'
   import YShelf from '/components/shelf'
   import { getStore } from '/utils/storage'
+  import { mapState } from 'vuex'
   export default {
     data () {
       return {
@@ -71,6 +72,11 @@
         countTime: 0
       }
     },
+    computed: {
+      ...mapState(
+        ['language']
+      )
+    },
     methods: {
       async _getOrderDet () {
         this.loading = true
@@ -86,7 +92,7 @@
       this.companyId = getStore('companyId')
       this.orderGuid = this.$route.query.orderGuid
       this.orderTotal = this.$route.query.orderTotal
-      this.orderTitle = '订单号：' + this.$route.query.orderId
+      this.orderTitle = this.language.orderDetail.title + this.$route.query.orderId
       this._getOrderDet()
     },
     components: {

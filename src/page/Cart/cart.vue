@@ -1,19 +1,19 @@
 <template>
-  <div class="shopping-cart">
+  <div class="shopping-cart" v-loading="loading">
     <y-header>
       <div slot="nav"></div>
     </y-header>
     <div class="store-content page-cart">
       <div class="gray-box">
-        <div class="title"><h2>购物清单</h2></div>
+        <div class="title"><h2>{{language.cart.title}}</h2></div>
         <!--内容-->
         <div v-if="cartList.length">
           <div class="ui-cart">
             <div>
               <!--标题-->
               <div class="cart-table-title">
-                <span class="name">商品信息</span> <span class="operation">操作</span> <span
-                class="subtotal">小计</span> <span class="num">数量</span> <span class="price1">单价</span>
+                <span class="name">{{language.cart.goodInfo}}</span> <span class="operation">{{language.cart.operation}}</span> <span
+                class="subtotal">{{language.cart.subtotal}}</span> <span class="num">{{language.cart.count}}</span> <span class="price1">{{language.cart.price}}</span>
               </div>
               <!--列表-->
               <div class="cart-table" v-for="(item,i) in cartList" :key="i">
@@ -86,18 +86,18 @@
               <div class="shipping">
                 <div class="shipping-box">
                   <div class="shipping-total shipping-num">
-                    <h4 class="highlight">共计 <i v-text="totalNum"></i> 件商品</h4>
+                    <h4 class="highlight">{{language.cart.totalCount}} <i v-text="totalNum"></i> {{language.cart.good}}</h4>
                     <!-- <h5>共计 <i v-text="totalNum"></i> 件商品</h5> -->
                   </div>
                   <div class="shipping-total shipping-price">
-                    <h4 class="highlight">总额：<span>€</span><i v-text="totalPrice"></i></h4>
+                    <h4 class="highlight">{{language.cart.totalPrice}}<span>€</span><i v-text="totalPrice"></i></h4>
                     <!-- <h5 class="shipping-tips ng-scope">应付总额不含运费</h5> -->
                   </div>
                 </div>
                 <y-button
                           class="big-main-btn main-btn"
                           style="margin: 0;width: 130px;height: 50px;line-height: 50px;font-size: 16px"
-                          :text="commitNow" @btnClick="commit"></y-button>
+                          :text="language.cart.commit" @btnClick="commit"></y-button>
               </div>
             </div>
           </div>
@@ -105,7 +105,7 @@
         <div v-else style="padding:50px">
           <div class="cart-e">
           </div>
-          <p style="text-align: center;padding: 20px;color: #8d8d8d">你的购物车空空如也</p>
+          <p style="text-align: center;padding: 20px;color: #8d8d8d">{{language.cart.emptyCart}}</p>
           <div style="text-align: center">
           </div>
 
@@ -126,13 +126,13 @@
     data () {
       return {
         userId: 0,
-        commitNow: '上传订单',
-        submit: true
+        submit: true,
+        loading: false
       }
     },
     computed: {
       ...mapState(
-        ['cartList', 'companyId']
+        ['cartList', 'companyId', 'language']
       ),
       // 是否全选
       // checkAllFlag () {
@@ -297,7 +297,7 @@
               goods: this.getOrderData()
             }
             let commitRes = await commitOrder(data)
-            this.commitNow = '上传中...'
+            this.loading = true
             this.submit = false
             if (commitRes.success) {
               this.$message.success('上传订单成功！')
@@ -305,7 +305,7 @@
             } else {
               this.$message.error('上传订单失败，请稍后重试。')
             }
-            this.commitNow = '上传订单'
+            this.loading = false
             this.submit = true
           } else if (addressRes.success) {
             this.alertAddAddress()

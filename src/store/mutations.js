@@ -13,7 +13,8 @@ import {
   SET_HOST,
   SET_ADDBYBAG,
   SET_SHOWZK,
-  SET_COMPUTEDZK
+  SET_COMPUTEDZK,
+  SET_LANGUAGE
 } from './mutation-types'
 import { setStore, getStore } from '../utils/storage'
 export default {
@@ -170,5 +171,16 @@ export default {
   [SET_COMPUTEDZK] (state, computedZk) {
     state.computedZk = computedZk
     setStore('computedZk', computedZk)
+  },
+  [SET_LANGUAGE] (state, language) {
+    console.log(language)
+    let type = getStore('languageType')
+    if (type) {
+      state.language = language[type]
+    } else {
+      type = 'Chinese'
+      state.language = language[type]
+      setStore('languageType', 'Chinese')
+    }
   }
 }

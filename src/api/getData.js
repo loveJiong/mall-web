@@ -2,6 +2,7 @@ import axios from 'axios'
 import store from './../store'
 
 let configUrl = `${window.location.origin}/static/config/config.json`
+let languageUrl = `${window.location.origin}/static/config/language.json`
 
 const successCode = '00'
 const headers = {
@@ -93,3 +94,5 @@ export const updateCart = (customerId, companyId, data) => http(`/shoppingcar/up
 export const deleteCart = (customerId, companyId, data) => http(`/shoppingcar/delete?customerId=${customerId}&companyId=${companyId}`, 'POST', headers, data)
 
 export const getConfig = () => http(configUrl, 'GET', headers)
+
+export const getLanguage = () => http(languageUrl, 'GET', headers)

@@ -10,9 +10,9 @@
       <div class="good-price pr">
         <div class="ds pa">
           <a @click="goodsDetails(msg)">
-            <y-button text="查看详情" style="margin: 0 5px"></y-button>
+            <y-button :text="language.goodList.toDetail" style="margin: 0 5px"></y-button>
           </a>
-          <y-button v-if="msg.price" text="加入购物车"
+          <y-button v-if="msg.price" :text="language.goodList.addToCart"
                     style="margin: 0 5px"
                     @btnClick="addCart(msg)"
                     classStyle="main-btn"
@@ -107,7 +107,7 @@
       }
     },
     computed: {
-      ...mapState(['login', 'showMoveImg', 'showCart', 'companyId', 'addByBag', 'showZk', 'computedZk'])
+      ...mapState(['login', 'showMoveImg', 'showCart', 'companyId', 'addByBag', 'showZk', 'computedZk', 'language'])
     },
     components: {
       YButton
