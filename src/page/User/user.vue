@@ -42,9 +42,9 @@
         return [
           {name: this.language.user.myorder, path: 'orderList'},
           // {name: '账户资料', path: 'information'},
-          {name: this.language.user.address, path: 'addressList'}
+          {name: this.language.user.address, path: 'addressList'},
           // {name: '我的优惠', path: 'coupon'},
-          // {name: '售后服务', path: 'support'},
+          {name: this.language.user.support, path: 'support'}
           // {name: '以旧换新', path: 'aihuishou'}
         ]
       }

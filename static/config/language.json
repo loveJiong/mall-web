@@ -6,6 +6,7 @@
                 "search": "请输入商品信息",
                 "myOrder": "我的订单",
                 "address": "收货地址",
+                "support": "关于我们",
                 "logout": "退出",
                 "emptyCart": "您的购物车竟然是空的！",
                 "toCart": "去购物车",
@@ -38,7 +39,8 @@
             },
             "user": {
                 "myorder": "我的订单",
-                "address": "收货地址"
+                "address": "收货地址",
+                "support": "关于我们"
             },
             "cart": {
                 "title": "购物清单",
@@ -94,6 +96,14 @@
                 "addErr": "新增地址失败，请稍后重试。",
                 "addTitle": "新增收货地址",
                 "addButton": "添加地址"
+            },
+            "support": {
+                "title": "关于我们",
+                "text": "GLORIA EUROPA 2017 S.L 是一家专业百货用品，研发，生产，创新，批发销售的综合性为一体。主要产品有：手工，文具，节日，针织等产品。可满足广大客户朋友的需求。",
+                "linkType": "联系方式",
+                "phone": "电话",
+                "wechat": "微信",
+                "address": "地址"
             }
         }
     }

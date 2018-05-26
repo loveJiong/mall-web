@@ -48,9 +48,9 @@
                       <li>
                         <router-link to="/user/addressList">{{language.header.address}}</router-link>
                       </li>
-                      <!-- <li>
-                        <router-link to="/user/support">售后服务</router-link>
-                      </li> -->
+                      <li>
+                        <router-link to="/user/support">{{language.header.support}}</router-link>
+                      </li>
                       <!-- <li>
                         <router-link to="/user/coupon">我的优惠</router-link>
                       </li> -->
