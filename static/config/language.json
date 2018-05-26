@@ -3,6 +3,7 @@
     "data": {
         "Chinese": {
             "header": {
+                "title": "简体中文",
                 "search": "请输入商品信息",
                 "myOrder": "我的订单",
                 "address": "收货地址",
@@ -64,7 +65,7 @@
                 "emptyOrder": "你还未创建过订单"
             },
             "orderDetail": {
-                "title": "订单号",
+                "title": "订单号：",
                 "goodName": "商品名称",
                 "price": "单价",
                 "count": "数量",
@@ -104,6 +105,112 @@
                 "phone": "电话",
                 "wechat": "微信",
                 "address": "地址"
+            }
+        },
+        "Spanish": {
+            "header": {
+                "title": "españols",
+                "search": "Buscar",
+                "myOrder": "Mi pedidos",
+                "address": "Dirección de envío",
+                "support": "Acerca de nosotros",
+                "logout": "salir tu cuenta",
+                "emptyCart": "您的购物车竟然是空的！",
+                "toCart": "去购物车",
+                "total": "total:",
+                "goodCount": "Cantidad",
+                "goodList": "catálogo",
+                "home": "首页"
+            },
+            "categoryList": {
+                "toDetail": "Ver detalles"
+            },
+            "goodList": {
+                "noGood": "抱歉！暂时还没有商品",
+                "err": "抱歉！出错了...",
+                "toDetail": "Ver detalles",
+                "addToCart": "加入购物车"
+            },
+            "login": {
+                "text": "Iniciar sesion",
+                "account": "Direccion de e-mail o numero de teléfono movil",
+                "pwd": "Contraseña",
+                "rememberPwd": "Recuerdame",
+                "loginButton": "Iniciar sesion",
+                "returnButton": "salir"
+            },
+            "goodsDetails": {
+                "count": "Cantidad",
+                "addToCart": "加入购物车",
+                "lookPrice": "登录后查看"
+            },
+            "user": {
+                "myorder": "Mi pedidos",
+                "address": "Dirección de envío",
+                "support": "Acerca de nosotros"
+            },
+            "cart": {
+                "title": "Mis pedidos",
+                "goodInfo": "Descripcion",
+                "operation": "Eliminar",
+                "price": "Precio",
+                "count": "Cantidad",
+                "subtotal": "Neto",
+                "emptyCart": "您的购物车竟然是空的！",
+                "totalPrice": "Importes:",
+                "good": "Cantidad",
+                "totalCount": "total",
+                "commit": "Envio pedidos"
+            },
+            "order": {
+                "title": "Mi pedidos",
+                "orderBh": "Pedidos No:",
+                "count": "Cantidad:",
+                "price": "Importes:",
+                "toDetail": "Ver detalles",
+                "emptyOrder": "你还未创建过订单"
+            },
+            "orderDetail": {
+                "title": "Pedidos No:",
+                "goodName": "Descripcion",
+                "price": "Precio",
+                "count": "Cantidad",
+                "subtotal": "Neto",
+                "totalPrice": "Importes:",
+                "err": "获取该订单信息失败"
+            },
+            "address": {
+                "title": "Dirección de envío",
+                "name": "Nombre",
+                "detail": "Dirección",
+                "phone": "Teléfono",
+                "emptyAddress": "你还未添加收货地址",
+                "companyName": "Nombre de la empresa",
+                "linkMan": "Contactos",
+                "companySh": "税号",
+                "companyAddress": "Dirección",
+                "city": "Ciudad",
+                "province": "Provincias",
+                "country": "País",
+                "postalCode": "Código postal",
+                "linkTelephone": "Teléfono",
+                "linkEmail": "E-Mail",
+                "save": "Guardar",
+                "updateSuccess": "恭喜您，更新地址成功！",
+                "updateErr": "更新地址失败，请稍后重试。",
+                "updateTitle": "管理收货地址",
+                "addSuccess": "恭喜您，新增地址成功！",
+                "addErr": "新增地址失败，请稍后重试。",
+                "addTitle": "新增收货地址",
+                "addButton": "Añadir la dirección"
+            },
+            "support": {
+                "title": "Acerca de nosotros",
+                "text": "GLORIA EUROPA 2017 S.L 是一家专业百货用品，研发，生产，创新，批发销售的综合性为一体。主要产品有：手工，文具，节日，针织等产品。可满足广大客户朋友的需求。",
+                "linkType": "Contacto",
+                "phone": "Teléfono",
+                "wechat": "weChat",
+                "address": "Dirección"
             }
         }
     }

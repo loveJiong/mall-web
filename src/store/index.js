@@ -21,7 +21,8 @@ const state = {
   companyId: '1',
   addByBag: true,
   showZk: true,
-  language: {}
+  language: {},
+  allLanguage: {}
 }
 
 export default new Vuex.Store({

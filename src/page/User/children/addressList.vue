@@ -294,10 +294,10 @@
       margin-bottom: 15px;
       > span {
         display: inline-block;
-        width: 15%;
+        width: 20%;
       }
       > input {
-        width: 84%;
+        width: 79%;
         height: 50px;
         font-size: 18px;
         padding: 10px 20px;

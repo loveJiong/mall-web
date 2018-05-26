@@ -5,7 +5,7 @@
         <div class="w-box">
           <div class="nav-logo">
             <h1 @click="changePage(1)">
-              <router-link to="/" title="商城官网">商城</router-link>
+              <router-link to="/" title="mall">mall</router-link>
             </h1>
           </div>
           <div class="right-box">
@@ -20,13 +20,6 @@
                 @select="handleSelect"
                 :on-icon-click="handleIconClick">
               </el-autocomplete>
-              <!-- <router-link to="/goods"><a @click="changePage(2)">全部商品</a></router-link>
-              <router-link to="/thanks"><a @click="changePage(4)">捐赠</a></router-link> -->
-              <!-- <router-link to="/">Smartisan M1 / M1L</router-link>
-              <router-link to="/">Smartisan OS</router-link>
-              <router-link to="/">欢喜云</router-link>
-              <router-link to="/">应用下载</router-link>
-              <router-link to="/">官方论坛</router-link> -->
             </div>
             <div class="nav-aside" ref="aside" :class="{fixed:st}">
               <div class="user pr">
@@ -114,6 +107,15 @@
                   </div>
                 </div>
               </div>
+              <div class="language pr" @mouseover="languageShowState()" @mouseout="languageShowState()">
+                <span :class="{active:showLanguage}">{{language.header.title}}</span>
+                <div class="nav-user-wrapper pa active" v-show="showLanguage">
+                  <div class="nav-user-list">
+                    <p @click="toggleLanguage('Chinese')">简体中文</p>
+                    <p @click="toggleLanguage('Spanish')">español</p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -139,21 +141,6 @@
                     </li>
                   </ul>
                 </li>
-                <!-- <li>
-                  <a @click="changGoods(3)" :class="{active:choosePage===3}">品牌周边</a>
-                </li>
-                <li>
-                  <router-link to="/thanks"><a @click="changePage(4)" :class="{active:choosePage===4}">捐赠名单</a></router-link>
-                </li>
-                <li>
-                  <a href="http://xmadmin.exrick.cn" target="_blank">后台管理系统</a>
-                </li>
-		            <li>
-                  <a href="http://xpay.exrick.cn" target="_blank">XPay支付系统</a>
-                </li>
-                <li>
-                  <a href="https://github.com/Exrick/xmall" target="_blank">Github</a>
-                </li> -->
               </ul>
               <div></div>
             </div>
@@ -185,7 +172,8 @@
         choosePage: 1,
         searchResults: [],
         timeout: null,
-        categoryListFlag: false
+        categoryListFlag: false,
+        showLanguage: false
       }
     },
     computed: {
@@ -210,7 +198,7 @@
       }
     },
     methods: {
-      ...mapMutations(['ADD_CART', 'INIT_BUYCART', 'ADD_ANIMATION', 'SHOW_CART', 'REDUCE_CART', 'RECORD_USERINFO', 'EDIT_CART', 'SET_CATEGORYLIST']),
+      ...mapMutations(['ADD_CART', 'INIT_BUYCART', 'ADD_ANIMATION', 'SHOW_CART', 'REDUCE_CART', 'RECORD_USERINFO', 'EDIT_CART', 'SET_CATEGORYLIST', 'TOGGLE_LANGUAGE']),
       handleIconClick (ev) {
         if (this.$route.path === '/search') {
           this.$router.push({
@@ -270,7 +258,6 @@
         if (searchRes.success) {
           let maxSize = 5
           let arr = []
-          console.log(searchRes)
           if (searchRes.data.length <= 5) {
             maxSize = searchRes.data.length
           }
@@ -306,6 +293,13 @@
       // 购物车显示
       cartShowState (state) {
         this.SHOW_CART({showCart: state})
+      },
+      languageShowState () {
+        this.showLanguage = !this.showLanguage
+      },
+      toggleLanguage (type) {
+        this.TOGGLE_LANGUAGE(type)
+        location.reload()
       },
       // 登陆时获取一次购物车商品
       async _getCartList () {
@@ -688,6 +682,50 @@
           left: 50%;
         }
 
+      }
+    }
+    .language {
+      position: relative;
+      float: left;
+      margin-left: 21px;
+      width: 61px;
+      z-index: 99;
+      > .active {
+        cursor: pointer;
+        color: #fff;
+      }
+      &:hover {
+        a:before {
+          content: " ";
+          background-position: 0 -22px;
+        }
+      }
+      .nav-user-wrapper {
+        right: 0;
+        width: 100px;
+        text-align: center;
+        .nav-user-list {
+          padding: 10px 0;
+          &:before {
+            right: 34px;
+          }
+          p {
+            font-size: 12px;
+            color: #666;
+            padding: 5px 0;
+            &:hover {
+              background: #fafafa;
+              cursor: pointer;
+            }
+          }
+        }
+      }
+      .nav-user-wrapper.active {
+        top: 18px;
+        visibility: visible;
+        opacity: 1;
+        -webkit-transition: opacity .15s ease-out;
+        transition: opacity .15s ease-out;
       }
     }
     .shop {

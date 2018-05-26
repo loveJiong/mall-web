@@ -1,6 +1,6 @@
 <template>
   <div>
-    <y-shelf title="我的订单">
+    <y-shelf :title="language.order.title">
       <div slot="content">
         <div v-loading="loading" v-if="orderList.length" style="min-height: 10vw;max-height: 304px;overflow: auto;">
           <div v-for="(item,i) in orderList" :key="i">
