@@ -114,10 +114,10 @@
                 "myOrder": "Mi pedidos",
                 "address": "Dirección de envío",
                 "support": "Acerca de nosotros",
-                "logout": "salir tu cuenta",
-                "emptyCart": "carro vacio",
-                "toCart": "ir a la cesta",
-                "total": "total:",
+                "logout": "Salir tu cuenta",
+                "emptyCart": "Tu auto está vacío",
+                "toCart": "Ir a la cesta",
+                "total": "Total:",
                 "goodCount": "Cantidad",
                 "goodList": "Categoría",
                 "home": "Inicio"
@@ -126,10 +126,10 @@
                 "toDetail": "Ver detalles"
             },
             "goodList": {
-                "noGood": "Io siento ! no nos queda",
-                "err": "error",
+                "noGood": "Lo siento ! no nos queda",
+                "err": "Error",
                 "toDetail": "Ver detalles",
-                "addToCart": "añadir al carro"
+                "addToCart": "Añadir al carro"
             },
             "login": {
                 "text": "Iniciar sesión",
@@ -137,12 +137,12 @@
                 "pwd": "Contraseña",
                 "rememberPwd": "Recuerdame",
                 "loginButton": "Iniciar sesión",
-                "returnButton": "salir"
+                "returnButton": "Salir"
             },
             "goodsDetails": {
                 "count": "Cantidad",
-                "addToCart": "añadir al carro",
-                "lookPrice": "登录后查看"
+                "addToCart": "Añadir al carro",
+                "lookPrice": "Mirar precio"
             },
             "user": {
                 "myorder": "Mi pedidos",
@@ -152,14 +152,14 @@
             "cart": {
                 "title": "Mis pedidos",
                 "goodInfo": "Descripcion",
-                "operation": "Eliminar",
+                "operation": "Operacion",
                 "price": "Precio",
                 "count": "Cantidad",
                 "subtotal": "Neto",
-                "emptyCart": "carro vacio",
+                "emptyCart": "Tu auto está vacío",
                 "totalPrice": "Importes:",
                 "good": "Cantidad",
-                "totalCount": "total",
+                "totalCount": "Total",
                 "commit": "Envio pedidos"
             },
             "order": {
@@ -168,7 +168,7 @@
                 "count": "Cantidad:",
                 "price": "Importes:",
                 "toDetail": "Ver detalles",
-                "emptyOrder": "你还未创建过订单"
+                "emptyOrder": "Todavia no tienes pedido"
             },
             "orderDetail": {
                 "title": "Pedidos No:",
@@ -177,17 +177,17 @@
                 "count": "Cantidad",
                 "subtotal": "Neto",
                 "totalPrice": "Importes:",
-                "err": "获取该订单信息失败"
+                "err": "Error en el pedido"
             },
             "address": {
                 "title": "Dirección de envío",
                 "name": "Nombre",
                 "detail": "Dirección",
                 "phone": "Teléfono",
-                "emptyAddress": "你还未添加收货地址",
-                "companyName": "Nombre de la empresa",
+                "emptyAddress": "No hay direccion",
+                "companyName": "Particular o empresa",
                 "linkMan": "Contactos",
-                "companySh": "税号",
+                "companySh": "Nif o cif",
                 "companyAddress": "Dirección",
                 "city": "Ciudad",
                 "province": "Provincias",
@@ -196,17 +196,17 @@
                 "linkTelephone": "Teléfono",
                 "linkEmail": "E-Mail",
                 "save": "Guardar",
-                "updateSuccess": "恭喜您，更新地址成功！",
-                "updateErr": "更新地址失败，请稍后重试。",
-                "updateTitle": "管理收货地址",
-                "addSuccess": "恭喜您，新增地址成功！",
-                "addErr": "新增地址失败，请稍后重试。",
-                "addTitle": "新增收货地址",
+                "updateSuccess": "Enhorabuena ya estas de alta",
+                "updateErr": "Actualizacion erronea,forfavor intentelo mas tarde",
+                "updateTitle": "Direccion de envio",
+                "addSuccess": "Enhorabuena la direccion ya esta añadida",
+                "addErr": "Error al añadir la direccion,forfavor intentelo mas tarde",
+                "addTitle": "Añadir nueva direccion",
                 "addButton": "Añadir la dirección"
             },
             "support": {
                 "title": "Acerca de nosotros",
-                "text": "GLORIA EUROPA 2017 S.L 是一家专业百货用品，研发，生产，创新，批发销售的综合性为一体。主要产品有：手工，文具，节日，针织等产品。可满足广大客户朋友的需求。",
+                "text": "GLORIA EUROPA 2017 S.L ES UNA EMPRESA ESPECIFICA EN BAZAR,INVESTIGACION Y DESARROLLO, FABRICACION,INNOVACION Y ES UN CONJUNTO PARA LOS MAYPORISTAS Y MINORISTAS. PRINCIPAL OBJETO:MANUALIDADES,PAPELERIAS,FIESTAS,TEXTE,ECT..PODEMOS SATISFACEROS TODO TIPO DE BIENES Y SERVICIOS.",
                 "linkType": "Contacto",
                 "phone": "Teléfono",
                 "wechat": "weChat",

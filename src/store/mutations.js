@@ -179,9 +179,9 @@ export default {
     if (type) {
       state.language = allLanguage[type]
     } else {
-      type = 'Chinese'
+      type = 'Spanish' // 默认西班牙语
       state.language = allLanguage[type]
-      setStore('languageType', 'Chinese')
+      setStore('languageType', 'Spanish') // 默认西班牙语
     }
   },
   [TOGGLE_LANGUAGE] (state, type) {
