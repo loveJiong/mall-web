@@ -41,9 +41,9 @@
                       <li>
                         <router-link to="/user/addressList">{{language.header.address}}</router-link>
                       </li>
-                      <li>
+                      <!-- <li>
                         <router-link to="/user/support">{{language.header.support}}</router-link>
-                      </li>
+                      </li> -->
                       <!-- <li>
                         <router-link to="/user/coupon">我的优惠</router-link>
                       </li> -->
@@ -107,6 +107,7 @@
                   </div>
                 </div>
               </div>
+              <div class="aboutUs pr" @click="toAboutUs()">{{language.header.support}}</div>
               <div class="language pr" @mouseover="languageShowState()" @mouseout="languageShowState()">
                 <span :class="{active:showLanguage}">{{language.header.title}}</span>
                 <div class="nav-user-wrapper pa active" v-show="showLanguage">
@@ -300,6 +301,9 @@
       toggleLanguage (type) {
         this.TOGGLE_LANGUAGE(type)
         location.reload()
+      },
+      toAboutUs () {
+        this.$router.push({path: '/support'})
       },
       // 登陆时获取一次购物车商品
       async _getCartList () {
@@ -553,11 +557,8 @@
         left: 0;
       }
       &.fixed {
-        width: 262px;
         position: fixed;
-        left: 50%;
-        top: 19px;
-        margin-left: 451px;
+        right: 70px;
         margin-top: 0;
         z-index: 32;
         top: -40px;
@@ -684,7 +685,24 @@
 
       }
     }
+    .fixed {
+      .aboutUs:hover {
+        color: #333;
+      }
+      .language .active {
+        color: #333;
+      }
+    }
+    .aboutUs {
+      margin-left: 21px;
+      color: #969696;
+      &:hover {
+        cursor: pointer;
+        color: #fff;
+      }
+    }
     .language {
+      color: #969696;
       position: relative;
       float: left;
       margin-left: 21px;
@@ -701,7 +719,7 @@
         }
       }
       .nav-user-wrapper {
-        right: 0;
+        right: -12px;
         width: 100px;
         text-align: center;
         .nav-user-list {
@@ -721,7 +739,7 @@
         }
       }
       .nav-user-wrapper.active {
-        top: 18px;
+        top: 10px;
         visibility: visible;
         opacity: 1;
         -webkit-transition: opacity .15s ease-out;

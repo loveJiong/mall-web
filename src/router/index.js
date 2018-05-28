@@ -72,6 +72,7 @@ export default new Router({
         {path: 'aihuishou', name: '以旧换新', component: aihuishou}
       ]
     },
+    {path: '/support', name: '售后服务', component: support},
     {path: '/checkout', name: 'checkout', component: checkout},
     {path: '*', redirect: '/home'}
   ]

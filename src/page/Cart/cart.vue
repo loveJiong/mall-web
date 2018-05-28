@@ -134,18 +134,6 @@
       ...mapState(
         ['cartList', 'companyId', 'language']
       ),
-      // 是否全选
-      // checkAllFlag () {
-      //   return this.checkedCount === this.cartList.length
-      // },
-      // 勾选的数量
-      // checkedCount () {
-      //   var i = 0
-      //   this.cartList && this.cartList.forEach((item) => {
-      //     if (item.checked === '1') i++
-      //   })
-      //   return Number(i)
-      // },
       // 计算总数量
       totalNum () {
         var totalNum = 0
@@ -163,16 +151,6 @@
         totalPrice = totalPrice.toFixed(2)
         return totalPrice
       }
-      // 选中的商品数量
-      // checkNum () {
-      //   var checkNum = 0
-      //   this.cartList && this.cartList.forEach(item => {
-      //     if (item.checked === '1') {
-      //       checkNum += (item.productNum)
-      //     }
-      //   })
-      //   return checkNum
-      // }
     },
     methods: {
       ...mapMutations([
@@ -181,14 +159,6 @@
       goodsDetails (id) {
         window.open(window.location.origin + '#/goodsDetails?productId=' + id)
       },
-      // 全选
-      // editCheckAll () {
-      //   let checkAll = !this.checkAllFlag
-      //   editCheckAll({userId: this.userId, checked: checkAll}).then(res => {
-      //     this.EDIT_CART({checked: checkAll})
-      //   })
-      // },
-      // 修改购物车
       _cartEdit (userId, productId, productNum, salePrice) {
         if (productNum > 0) {
           let data = {
@@ -207,41 +177,7 @@
         } else {
           this.cartdel(productId)
         }
-
-        // cartEdit(
-        //   {
-        //     userId,
-        //     productId,
-        //     productNum,
-        //     checked
-        //   }
-        // ).then(res => {
-        //   if (res.success === true) {
-        //     this.EDIT_CART(
-        //       {
-        //         productId,
-        //         checked,
-        //         productNum
-        //       }
-        //     )
-        //   }
-        // })
       },
-      // 修改购物车
-      // editCart (type, item) {
-      //   if (type && item) {
-      //     let checked = item.checked
-      //     let productId = item.productId
-      //     let productNum = item.productNum
-      //     // 勾选
-      //     if (type === 'check') {
-      //       let newChecked = checked === '1' ? '0' : '1'
-      //       this._cartEdit(this.userId, productId, productNum, newChecked)
-      //     }
-      //   } else {
-      //     console.log('缺少所需参数')
-      //   }
-      // },
       EditNum (productNum, productId, salePrice) { // 数量
         this._cartEdit(this.userId, productId, productNum, salePrice)
       },
@@ -283,9 +219,9 @@
         }
       },
       commit () {
-        this.$messageBox.confirm('确认上传当前订单？', '上传确认', {
-          confirmButtonText: '确认上传',
-          cancelButtonText: '取消',
+        this.$messageBox.confirm(this.language.cart.commitConfirm, this.language.cart.prompt, {
+          confirmButtonText: this.language.cart.confirm,
+          cancelButtonText: this.language.cart.cancel,
           type: 'success'
         }).then(async () => {
           let addressRes = await getAddress(this.userId)
@@ -300,10 +236,10 @@
             this.loading = true
             this.submit = false
             if (commitRes.success) {
-              this.$message.success('上传订单成功！')
+              this.$message.success(this.language.cart.commitSuccess)
               this.clearCart()
             } else {
-              this.$message.error('上传订单失败，请稍后重试。')
+              this.$message.error(this.language.cart.commitErr)
             }
             this.loading = false
             this.submit = true
@@ -315,9 +251,9 @@
         })
       },
       alertAddAddress () {
-        this.$messageBox.confirm('您当前没完善收货地址！', '提示', {
-          confirmButtonText: '前去完善',
-          cancelButtonText: '取消上传',
+        this.$messageBox.confirm(this.language.cart.noAddress, this.language.cart.prompt, {
+          confirmButtonText: this.language.cart.toAddAddress,
+          cancelButtonText: this.language.cart.cancel,
           type: 'warning'
         }).then(() => {
           this.$router.push('/user/addressList')

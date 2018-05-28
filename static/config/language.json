@@ -54,7 +54,15 @@
                 "totalPrice": "总额：",
                 "good": "件商品",
                 "totalCount": "共计",
-                "commit": "上传订单"
+                "commit": "上传订单",
+                "commitConfirm": "确认上传当前订单？",
+                "prompt": "提示",
+                "confirm": "确认",
+                "cancel": "取消",
+                "commitSuccess": "上传订单成功！",
+                "commitErr": "上传订单失败，请稍后重试。",
+                "noAddress": "您当前没完善收货地址！",
+                "toAddAddress": "添加收货地址"
             },
             "order": {
                 "title": "我的订单",
@@ -160,7 +168,15 @@
                 "totalPrice": "Importes:",
                 "good": "Cantidad",
                 "totalCount": "Total",
-                "commit": "Envio pedidos"
+                "commit": "Envio pedidos",
+                "commitConfirm": "La confirmación de la orden actual de envío?",
+                "prompt": "Consejos",
+                "confirm": "Confirmación",
+                "cancel": "Cancelar",
+                "commitSuccess": "El éxito de!",
+                "commitErr": "El fracaso",
+                "noAddress": "En la actualidad no mejora su dirección de envío!",
+                "toAddAddress": "Añadir nueva direccion"
             },
             "order": {
                 "title": "Mi pedidos",
