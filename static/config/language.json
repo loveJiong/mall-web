@@ -115,33 +115,33 @@
                 "address": "Dirección de envío",
                 "support": "Acerca de nosotros",
                 "logout": "salir tu cuenta",
-                "emptyCart": "您的购物车竟然是空的！",
-                "toCart": "去购物车",
+                "emptyCart": "carro vacio",
+                "toCart": "ir a la cesta",
                 "total": "total:",
                 "goodCount": "Cantidad",
-                "goodList": "catálogo",
-                "home": "首页"
+                "goodList": "Categoría",
+                "home": "Inicio"
             },
             "categoryList": {
                 "toDetail": "Ver detalles"
             },
             "goodList": {
-                "noGood": "抱歉！暂时还没有商品",
-                "err": "抱歉！出错了...",
+                "noGood": "Io siento ! no nos queda",
+                "err": "error",
                 "toDetail": "Ver detalles",
-                "addToCart": "加入购物车"
+                "addToCart": "añadir al carro"
             },
             "login": {
-                "text": "Iniciar sesion",
+                "text": "Iniciar sesión",
                 "account": "Direccion de e-mail o numero de teléfono movil",
                 "pwd": "Contraseña",
                 "rememberPwd": "Recuerdame",
-                "loginButton": "Iniciar sesion",
+                "loginButton": "Iniciar sesión",
                 "returnButton": "salir"
             },
             "goodsDetails": {
                 "count": "Cantidad",
-                "addToCart": "加入购物车",
+                "addToCart": "añadir al carro",
                 "lookPrice": "登录后查看"
             },
             "user": {
@@ -156,7 +156,7 @@
                 "price": "Precio",
                 "count": "Cantidad",
                 "subtotal": "Neto",
-                "emptyCart": "您的购物车竟然是空的！",
+                "emptyCart": "carro vacio",
                 "totalPrice": "Importes:",
                 "good": "Cantidad",
                 "totalCount": "total",
