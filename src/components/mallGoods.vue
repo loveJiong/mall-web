@@ -22,11 +22,11 @@
           <span style="font-size:14px" v-if="msg.price">€</span>
           ???
         </p>
-        <p v-if="(login && (msg.zk == '0' || msg.zk == '')) || !showZk">
+        <p v-if="login && (msg.zk == '0' || msg.zk == '' || !showZk)">
           <span style="font-size:14px" v-if="msg.price">€</span>
           {{msg.price}}
         </p>
-        <p class="have-zk" v-if="showZk && login && (msg.zk != '0' && msg.zk != '')">
+        <p class="have-zk" v-if="login && showZk && (msg.zk != '0' && msg.zk != '')">
           <span style="font-size:14px" v-if="msg.price">€</span>
           <span>{{zkPrice(msg.price, msg.zk)}}</span>
           <span class="origin-price">{{msg.price}}</span>

@@ -19,7 +19,7 @@
             <span :title="language.goodsDetails.lookPrice">
               <em>€</em><i>???</i></span>
           </h6>
-          <h6 v-if="(login && (product.zk == '0' || product.zk == '')) || !showZk" class="price">
+          <h6 v-if="login && (product.zk == '0' || product.zk == '' || !showZk)" class="price">
             <span>
               <em>€</em><i>{{product.price}}</i></span>
           </h6>
