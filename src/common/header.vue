@@ -858,9 +858,10 @@
         .item-thumb {
           position: relative;
           float: left;
-          width: 80px;
+          width: 106px;
           height: 80px;
           border-radius: 3px;
+          margin-right: 5px;
           &:before {
             content: "";
             position: absolute;
@@ -876,13 +877,13 @@
           }
           img {
             display: block;
-            @include wh(80px, 80px);
+            @include wh(106px, 80px);
             border-radius: 3px;
             overflow: hidden;
           }
         }
         .item-desc {
-          margin-left: 98px;
+          margin-left: 115px;
           display: table;
           @include wh(205px, 80px);
           h4 {

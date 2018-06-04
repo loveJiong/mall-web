@@ -9,10 +9,9 @@
           <br>
           <p>{{language.support.linkType}}</p>
           <p>{{language.support.phone}}：925788835</p>
-          <p>{{language.support.wechat}}：GLORIAEUROPA</p>
           <p>{{language.support.address}}：C/FUENTECILLA 34-40 45340 ONTIGOLA TOLEDO ESPANA</p>
+          <p>Email：gloriaeuropa2017@gmail.com</p>
         </div>
-        <img width="250" src="/static/images/qrcode.png">
       </div>
     </y-shelf>
   </div>

@@ -397,11 +397,11 @@
         position: relative;
         margin-top: 30px;
         overflow: hidden;
-        width: 80px;
+        width: 106px;
         height: 80px;
       }
       img {
-        width: 80px;
+        width: 106px;
         height: 80px;
       }
       .cart-items .items-thumb > a, .ui-cart .cart-items .items-thumb > i {

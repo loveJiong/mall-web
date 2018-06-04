@@ -147,7 +147,7 @@
   
   img {
     display: block;
-    @include wh(80px);
+    @include wh(106px, 80px);
   }
 
   .goods-table {

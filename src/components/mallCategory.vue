@@ -70,7 +70,7 @@
     .category-img {
       img {
         margin: 50px auto 10px;
-        @include wh(206px);
+        @include wh(275px, 206px);
         display: block;
       }
     }
