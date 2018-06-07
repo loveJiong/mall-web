@@ -1169,11 +1169,14 @@
       padding: 5px 10px;
       .category-name {
         font-weight: bold;
+        min-width: 85px;
+        text-align: center;
       }
     }
   }
   .secondaryList {
     display: flex;
+    flex-wrap: wrap;
     > li:hover {
       color: #5683EA;
       cursor: pointer;
