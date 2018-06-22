@@ -2,12 +2,12 @@
   <div class="goods">
     <div class="nav">
       <div class="w">
-        <div v-if="searching === false">共为您找到 {{total}} 款商品信息</div>
+        <div v-if="searching === false">{{language.search.totalFirst}} {{total}} {{language.search.totalLast}}</div>
       </div>
     </div>
 
     
-    <div v-loading="loading" element-loading-text="加载中..." style="min-height: 35vw;">
+    <div v-loading="loading" style="min-height: 35vw;">
       <div  class="img-item" v-if="!noResult" >
         <!--商品-->
         <div class="goods-box w">
@@ -18,13 +18,13 @@
       <div class="no-info" v-if="noResult" >
         <div class="no-data">
           <img src="/static/images/no-search.png">
-          <br> 抱歉！没有为您找到相关的商品
+          <br> {{language.search.noGoods}}
         </div>
       </div>
       <div class="no-info" v-if="error">
         <div class="no-data">
           <img src="/static/images/error.png">
-          <br> 抱歉！出错了...
+          <br> {{language.search.err}}
         </div>
       </div>
     </div>
@@ -59,7 +59,7 @@
       }
     },
     computed: {
-      ...mapState(['companyId'])
+      ...mapState(['companyId', 'language'])
     },
     methods: {
       handleSizeChange (val) {

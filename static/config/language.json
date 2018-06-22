@@ -16,6 +16,12 @@
                 "goodList": "商品列表",
                 "home": "首页"
             },
+            "search": {
+                "totalFirst": "共为您找到",
+                "totalLast": "款商品信息",
+                "noGoods": "抱歉！没有为您找到相关的商品",
+                "err": "抱歉！出错了..."
+            },
             "categoryList": {
                 "toDetail": "查看详情"
             },
@@ -129,6 +135,12 @@
                 "goodCount": "Cantidad",
                 "goodList": "Categoría",
                 "home": "Inicio"
+            },
+            "search": {
+                "totalFirst": "Total",
+                "totalLast": "Cantidad",
+                "noGoods": "Lo siento ！no nos queda",
+                "err": "Error"
             },
             "categoryList": {
                 "toDetail": "Ver detalles"

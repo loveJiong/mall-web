@@ -1,6 +1,7 @@
 <template>
   <div class="good-item">
     <div style="">
+      <h3>REF: {{msg.no}}</h3>
       <div class="good-img">
         <a @click="goodsDetails(msg)">
           <img v-lazy="msg.url" :alt="msg.name">
@@ -85,12 +86,6 @@
               bagcount: product.bagCount
             })
           } else { // 未登录 vuex
-            // this.ADD_CART({
-            //   productId: product.no,
-            //   salePrice: this.zkPrice(product.price, product.zk),
-            //   productName: product.name,
-            //   productImg: product.url
-            // })
             this.$router.push({path: '/user'})
           }
           // 加入购物车动画
@@ -141,7 +136,7 @@
 
     .good-img {
       img {
-        margin: 50px auto 10px;
+        margin: 14px auto 10px;
         @include wh(275px, 206px);
         display: block;
       }
@@ -166,9 +161,9 @@
       overflow: hidden;
     }
     h3 {
-      text-align: center;
+      text-align: left;
       line-height: 1.2;
-      font-size: 12px;
+      font-size: 14px;
       color: #d0d0d0;
       padding: 10px;
     }

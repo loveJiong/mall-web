@@ -2,7 +2,7 @@
   <div>
     <y-shelf v-bind:title="orderTitle">
       <div slot="content">
-        <div v-loading="loading" element-loading-text="加载中..." style="min-height: 10vw;" v-if="orderList.length">
+        <div v-loading="loading" style="min-height: 10vw;" v-if="orderList.length">
           <div class="gray-sub-title cart-title">
             <div class="first">
               <div>
