@@ -6,7 +6,7 @@
         <div class="gallery">
           <div class="thumb">
             <div class="big">
-              <img :src="product.picurl" :alt="product.name">
+              <img :src="product.picurl" :alt="showName(product)">
             </div>
           </div>
         </div>
@@ -14,7 +14,7 @@
       <!--右边-->
       <div class="banner">
         <div class="sku-custom-title">
-          <h4>{{product.name}}</h4>
+          <h4>{{showName(product)}}</h4>
           <h6 v-if="!login" class="price">
             <span :title="language.goodsDetails.lookPrice">
               <em>€</em><i>???</i></span>
@@ -117,7 +117,8 @@
               productName: product.name,
               productImg: product.picurl,
               productNum: this.productNum,
-              bagcount: product.bagcount
+              bagcount: product.bagcount,
+              xname: product.xname
             })
           } else { // 未登录 vuex
             // this.ADD_CART({
@@ -146,6 +147,13 @@
       // },
       editNum (num) {
         this.productNum = num
+      },
+      showName (good) {
+        let result = good.name
+        if (this.language.type === 'Spanish') {
+          result = good.xname
+        }
+        return result
       }
     },
     components: {

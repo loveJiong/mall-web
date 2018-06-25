@@ -27,7 +27,7 @@ export default {
     }
   },
   // 加入购物车
-  [ADD_CART] (state, {productId, salePrice, productName, productImg, productNum = 1, bagcount}) {
+  [ADD_CART] (state, {productId, salePrice, productName, productImg, productNum = 1, bagcount, xname}) {
     let cart = state.cartList // 购物车
     let falg = true
     let goods = {
@@ -35,7 +35,8 @@ export default {
       salePrice,
       productName,
       productImg,
-      bagcount
+      bagcount,
+      xname
     }
     if (cart.length) {        // 有内容
       cart.forEach(item => {

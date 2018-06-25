@@ -75,7 +75,7 @@
                                   </div>
                                   <div class="item-desc">
                                     <div class="cart-cell"><h4>
-                                      <a href="" v-text="item.productName"></a>
+                                      <a href="" v-text="showName(item)"></a>
                                     </h4>
                                       <!-- <p class="attrs"><span>白色</span></p> -->
                                       <h6><span class="price-icon">€</span><span
@@ -265,6 +265,9 @@
           for (let index = 0; index < maxSize; index++) {
             let obj = {}
             obj.value = searchRes.data[index].name
+            if (this.language.type === 'Spanish') {
+              obj.value = searchRes.data[index].xname
+            }
             obj.productId = searchRes.data[index].no
             arr.push(obj)
           }
@@ -321,7 +324,8 @@
               productName: item.name,
               productImg: item.url,
               productNum: item.count,
-              bagcount: item.bagcount
+              bagcount: item.bagcount,
+              xname: item.xname
             }
             return result
           })
@@ -381,6 +385,13 @@
         } else {
           this.changePage(0)
         }
+      },
+      showName (good) {
+        let result = good.productName
+        if (this.language.type === 'Spanish') {
+          result = good.xname || good.productName
+        }
+        return result
       }
     },
     mounted () {

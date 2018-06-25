@@ -4,10 +4,10 @@
       <h3>REF: {{msg.no}}</h3>
       <div class="good-img">
         <a @click="goodsDetails(msg)">
-          <img v-lazy="msg.url" :alt="msg.name">
+          <img v-lazy="msg.url" :alt="showName(msg)">
         </a>
       </div>
-      <h6 class="good-title" v-html="msg.name">{{msg.name}}</h6>
+      <h6 class="good-title" v-html="showName(msg)">{{showName(msg)}}</h6>
       <div class="good-price pr">
         <div class="ds pa">
           <a @click="goodsDetails(msg)">
@@ -65,6 +65,13 @@
         }
         return num
       },
+      showName (good) {
+        let result = good.name
+        if (this.language.type === 'Spanish') {
+          result = good.xname
+        }
+        return result
+      },
       addCart (product) {
         if (!this.showMoveImg) {     // 动画是否在运动
           if (this.login) { // 登录了 直接存在用户名下
@@ -83,7 +90,8 @@
               productName: product.name,
               productImg: product.url,
               productNum: this.addByBag ? product.bagCount : 1,
-              bagcount: product.bagCount
+              bagcount: product.bagCount,
+              xname: product.xname
             })
           } else { // 未登录 vuex
             this.$router.push({path: '/user'})

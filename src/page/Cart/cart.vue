@@ -27,15 +27,15 @@
                       </div> -->
                       <!--图片-->
                       <div class="items-thumb fl">
-                        <img :alt="item.productName"
+                        <img :alt="showName(item)"
                              :src="item.productImg">
-                        <a @click="goodsDetails(item.productId)" :title="item.productName" target="_blank"></a>
+                        <a @click="goodsDetails(item.productId)" :title="showName(item)" target="_blank"></a>
                       </div>
                       <!--信息-->
                       <div class="name hide-row fl">
                         <div class="name-table">
-                          <a @click="goodsDetails(item.productId)" :title="item.productName" target="_blank"
-                             v-text="item.productName"></a>
+                          <a @click="goodsDetails(item.productId)" :title="showName(item)" target="_blank"
+                             v-text="showName(item)"></a>
                           <!-- <ul class="attribute">
                             <li>白色</li>
                           </ul> -->
@@ -260,6 +260,13 @@
         }, () => {
           console.log('cancel')
         })
+      },
+      showName (good) {
+        let result = good.productName
+        if (this.language.type === 'Spanish') {
+          result = good.xname || good.productName
+        }
+        return result
       }
     },
     mounted () {

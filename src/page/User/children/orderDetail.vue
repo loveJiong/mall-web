@@ -21,7 +21,7 @@
             <div class="cart-items" v-for="(item,i) in orderList" :key="i">
               <div class="img-box"><img :src="item.url" alt=""></div>
               <div class="name-cell ellipsis">
-                <div title="">{{item.name}}</div>
+                <div title="">{{showName(item)}}</div>
               </div>
               <div class="n-b">
                 <div class="price">€ {{item.price}}</div>
@@ -85,6 +85,13 @@
           this.orderList = orderListRes.data
         }
         this.loading = false
+      },
+      showName (good) {
+        let result = good.name
+        if (this.language.type === 'Spanish') {
+          result = good.xname || good.name
+        }
+        return result
       }
     },
     created () {
